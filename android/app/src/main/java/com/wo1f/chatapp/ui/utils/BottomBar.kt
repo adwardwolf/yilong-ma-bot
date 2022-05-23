@@ -50,7 +50,7 @@ fun ChatBottomBar(
             .fillMaxWidth()
             .wrapContentHeight()
             .imePadding(),
-        color = MaterialTheme.colors.secondary,
+        color = MaterialTheme.colors.surface,
     ) {
         Column(
             modifier = Modifier
@@ -83,7 +83,7 @@ fun ChatBottomBar(
                         fontSize = 14.sp
                     ),
                     cursorBrush = Brush.horizontalGradient(
-                        listOf(MaterialTheme.colors.primary, MaterialTheme.colors.secondaryVariant)
+                        listOf(MaterialTheme.colors.secondary, MaterialTheme.colors.secondaryVariant)
                     ),
                 ) {
                     Surface(

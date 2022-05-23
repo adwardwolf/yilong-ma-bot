@@ -40,7 +40,8 @@ fun UserTemplate(
         ) {
             Box {
                 Surface(
-                    shape = CircleShape
+                    shape = CircleShape,
+                    color = MaterialTheme.colors.onPrimary
                 ) {
                     Image(
                         modifier = Modifier.size(40.dp),
@@ -49,7 +50,7 @@ fun UserTemplate(
                     )
                 }
             }
-            W400xh5Text(text = "@$name", maxLines = 1)
+            W600xh5Text(text = "@$name", maxLines = 1)
         }
     }
 }

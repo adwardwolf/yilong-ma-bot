@@ -6,13 +6,10 @@ import com.wo1f.chatapp.data.Chat
 import com.wo1f.chatapp.data.ChatRes
 import com.wo1f.chatapp.data.JoinChat
 import io.socket.client.IO
-import io.socket.client.Manager
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
 import io.socket.engineio.client.EngineIOException
-import io.socket.engineio.client.Transport
 import java.time.LocalTime
-
 
 class SocketIO {
 
@@ -24,7 +21,8 @@ class SocketIO {
 
     init {
         try {
-            mSocket = IO.socket("http://192.168.3.42:8080")
+//            mSocket = IO.socket("http://192.168.3.42:8080")
+            mSocket = IO.socket(Constants.BASE_URL + Constants.SOCKET_PORT)
             mSocket.apply {
                 connect()
                 on(Socket.EVENT_CONNECT_ERROR, onConnectionError)
@@ -49,7 +47,7 @@ class SocketIO {
 
     private val onConnectionError: Emitter.Listener
         get() = Emitter.Listener {
-            Log.d("SocketHandler" ,"Connection Error : $it")
+            Log.d("SocketHandler", "Connection Error : $it")
             it.forEach { item ->
                 val exception = item as EngineIOException
                 print(exception.message + " " + exception.code + " " + exception.cause)
@@ -95,9 +93,6 @@ class SocketIO {
 
     private val onDisconnect: Emitter.Listener
         get() = Emitter.Listener {
-            val data = JoinChat(name, room)
-            val jsonData = gson.toJson(data)
-            mSocket.emit(EVENT_UNSUBSCRIBE, jsonData)
         }
 
     fun sendMessage(text: String) {
@@ -108,6 +103,13 @@ class SocketIO {
         )
         val jsonData = gson.toJson(sendData)
         mSocket.emit(EVENT_NEW_MESSAGE, jsonData)
+    }
+
+    fun disconnect() {
+        val data = JoinChat(name, room)
+        val jsonData = gson.toJson(data)
+        mSocket.emit(EVENT_UNSUBSCRIBE, jsonData)
+        mSocket.disconnect()
     }
 
     fun onReceiving(listener: OnSocketListener) {

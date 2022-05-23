@@ -1,30 +1,38 @@
 package com.wo1f.chatapp.ui.theme
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 
+@SuppressLint("ConflictingOnColor")
 private val DarkColorPalette = darkColors(
-    primary = Purple200,
-    primaryVariant = Purple700,
-    secondary = Teal200
+    primary = DarkBlue,
+    primaryVariant = DarkBlue1,
+    onPrimary = Color.White,
+    secondary = LightYellowGreen,
+    secondaryVariant = LightYellowGreen1,
+    onSecondary = Color.White,
+    background = DarkBlue,
+    onBackground = Color.White,
+    surface = DarkBlue1,
+    onSurface = Color.White
 )
 
 private val LightColorPalette = lightColors(
-    primary = Purple500,
-    primaryVariant = Purple700,
-    secondary = Teal200
-
-    /* Other default colors to override
-    background = Color.White,
-    surface = Color.White,
-    onPrimary = Color.White,
+    primary = DarkBlue,
+    primaryVariant = DarkBlue1,
+    onPrimary = Color.Black,
+    secondary = LightYellowGreen,
+    secondaryVariant = LightYellowGreen1,
     onSecondary = Color.Black,
-    onBackground = Color.Black,
-    onSurface = Color.Black,
-    */
+    background = Black,
+    onBackground = Black,
+    surface = Color.White,
+    onSurface = LightGray
 )
 
 @Composable

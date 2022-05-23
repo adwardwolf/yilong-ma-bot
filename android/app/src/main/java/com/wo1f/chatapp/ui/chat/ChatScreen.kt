@@ -14,17 +14,22 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import com.wo1f.chatapp.data.Chat
-import com.wo1f.chatapp.ui.utils.ChatItem
 import com.wo1f.chatapp.ui.utils.ChatBottomBar
+import com.wo1f.chatapp.ui.utils.ChatItem
 import com.wo1f.chatapp.ui.utils.CustomTopAppBarIconStart
 import com.wo1f.chatapp.utils.SocketIO
 
@@ -32,6 +37,7 @@ import com.wo1f.chatapp.utils.SocketIO
 @Composable
 fun ChatScreen(goBack: () -> Unit) {
 
+    val lifecycleOwner = LocalLifecycleOwner.current
     val listState = rememberLazyListState()
     val socketIO = remember { SocketIO() }
     val viewModel: ChatViewModel = hiltViewModel()
@@ -40,6 +46,32 @@ fun ChatScreen(goBack: () -> Unit) {
     val socketListener = object : SocketIO.OnSocketListener {
         override fun setSocketListener(chat: Chat) {
             viewModel.receiveChat(chat)
+        }
+    }
+
+    val onStart: () -> Unit = {
+    }
+
+    val onStop: () -> Unit = {
+        socketIO.disconnect()
+    }
+
+    val currentOnStart by rememberUpdatedState(onStart)
+    val currentOnStop by rememberUpdatedState(onStop)
+
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_START) {
+                currentOnStart()
+            } else if (event == Lifecycle.Event.ON_STOP) {
+                currentOnStop()
+            }
+        }
+
+        lifecycleOwner.lifecycle.addObserver(observer)
+
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
         }
     }
 
@@ -103,7 +135,7 @@ private fun ChatContent(
         state = listState
     ) {
         item {
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(8.dp))
         }
 
         itemsIndexed(chatList) { _: Int, chat: Chat ->
@@ -111,7 +143,7 @@ private fun ChatContent(
         }
 
         item {
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }

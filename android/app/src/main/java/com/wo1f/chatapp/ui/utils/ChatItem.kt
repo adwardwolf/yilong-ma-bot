@@ -2,6 +2,7 @@ package com.wo1f.chatapp.ui.utils
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -9,12 +10,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.wo1f.chatapp.R
@@ -23,63 +26,155 @@ import com.wo1f.chatapp.utils.toAppTime
 
 @Composable
 fun ChatItem(chat: Chat) {
+    when (chat.type) {
+        Chat.Type.SENDER -> {
+            ChatSenderItem(chat)
+        }
+        Chat.Type.RECEIVER -> {
+            ChatReceiverItem(chat)
+        }
+        Chat.Type.JOINED -> {
+            ChatJoinedItem(chat)
+        }
+        Chat.Type.LEFT -> {
+            ChatLeftItem(chat)
+        }
+    }
+}
 
-    if (chat.type == Chat.Type.SENDER) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 12.dp, vertical = 4.dp),
-            horizontalArrangement = Arrangement.End
+@Composable
+private fun ChatSenderItem(chat: Chat) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 12.dp, vertical = 4.dp),
+        horizontalArrangement = Arrangement.End
+    ) {
+        Surface(
+            color = MaterialTheme.colors.secondary,
+            shape = RoundedCornerShape(16.dp)
         ) {
-            Surface(
-                color = Color.Red,
-                shape = MaterialTheme.shapes.large
-            ) {
-                Column(modifier = Modifier.padding(8.dp)) {
-                    W400xh5Text(text = chat.text, color = Color.White)
-                    W400xOverlineText(text = chat.date.toAppTime(), color = Color.LightGray)
-                }
-            }
-
-            Spacer(modifier = Modifier.width(8.dp))
-
-            Surface(
-                shape = CircleShape
-            ) {
-                Image(
-                    modifier = Modifier.size(40.dp),
-                    painter = painterResource(id = R.drawable.ic_human_profile),
-                    contentDescription = null
+            Column(modifier = Modifier.padding(8.dp)) {
+                W600xh5Text(
+                    text = chat.name,
+                    color = MaterialTheme.colors.background,
+                    maxLines = 1
+                )
+                W400xh5Text(
+                    text = chat.text,
+                    color = MaterialTheme.colors.background
+                )
+                W400xOverlineText(
+                    text = chat.date.toAppTime(),
+                    color = MaterialTheme.colors.primaryVariant,
+                    maxLines = 1
                 )
             }
         }
-    } else {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 12.dp, vertical = 4.dp),
-            horizontalArrangement = Arrangement.Start
+
+        Spacer(modifier = Modifier.width(8.dp))
+
+        Surface(
+            shape = CircleShape,
+            color = MaterialTheme.colors.onPrimary
         ) {
-            Surface(
-                shape = CircleShape
-            ) {
-                Image(
-                    modifier = Modifier.size(40.dp),
-                    painter = painterResource(id = R.drawable.ic_bot_profile),
-                    contentDescription = null
+            Image(
+                modifier = Modifier.size(40.dp),
+                painter = painterResource(id = R.drawable.ic_human_profile),
+                contentDescription = null
+            )
+        }
+    }
+}
+
+@Composable
+private fun ChatReceiverItem(chat: Chat) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 12.dp, vertical = 4.dp),
+        horizontalArrangement = Arrangement.Start
+    ) {
+        Surface(
+            shape = CircleShape,
+            color = MaterialTheme.colors.onPrimary
+        ) {
+            Image(
+                modifier = Modifier.size(40.dp),
+                painter = painterResource(id = R.drawable.ic_bot_profile),
+                contentDescription = null
+            )
+        }
+
+        Spacer(modifier = Modifier.width(8.dp))
+
+        Surface(
+            color = MaterialTheme.colors.secondary,
+            shape = RoundedCornerShape(16.dp)
+        ) {
+            Column(modifier = Modifier.padding(8.dp)) {
+                W600xh5Text(
+                    text = chat.name,
+                    color = MaterialTheme.colors.background,
+                    maxLines = 1
+                )
+                W400xh5Text(
+                    text = chat.text,
+                    color = MaterialTheme.colors.background
+                )
+                W400xOverlineText(
+                    text = chat.date.toAppTime(),
+                    color = MaterialTheme.colors.primaryVariant,
+                    maxLines = 1
                 )
             }
+        }
+    }
+}
 
-            Spacer(modifier = Modifier.width(8.dp))
-
-            Surface(
-                color = Color.Blue,
-                shape = MaterialTheme.shapes.large
+@Composable
+private fun ChatJoinedItem(chat: Chat) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp, vertical = 2.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Surface(
+            modifier = Modifier.wrapContentWidth(),
+            color = MaterialTheme.colors.secondary,
+            shape = CircleShape
+        ) {
+            Box(
+                modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp)
             ) {
-                Column(modifier = Modifier.padding(8.dp),) {
-                    W400xh5Text(text = chat.text, color = Color.White)
-                    W400xOverlineText(text = chat.date.toAppTime(), color = Color.LightGray)
-                }
+                W400xh6Text(
+                    text = "${chat.name} joined chat",
+                    color = MaterialTheme.colors.primary
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun ChatLeftItem(chat: Chat) {
+    Box(
+        modifier = Modifier.fillMaxWidth(),
+        contentAlignment = Alignment.Center
+    ) {
+        Surface(
+            modifier = Modifier.wrapContentWidth(),
+            color = MaterialTheme.colors.secondary,
+            shape = CircleShape
+        ) {
+            Box(
+                modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp)
+            ) {
+                W400xh6Text(
+                    text = "${chat.name} left chat",
+                    color = MaterialTheme.colors.primary
+                )
             }
         }
     }

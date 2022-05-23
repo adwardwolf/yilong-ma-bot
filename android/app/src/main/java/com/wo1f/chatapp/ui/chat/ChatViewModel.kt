@@ -9,7 +9,7 @@ import java.time.LocalTime
 import javax.inject.Inject
 
 @HiltViewModel
-class ChatViewModel @Inject constructor(): ViewModel() {
+class ChatViewModel @Inject constructor() : ViewModel() {
 
     val name = "adwardwo1f"
     private val _chatList = MutableStateFlow(arrayListOf<Chat>())

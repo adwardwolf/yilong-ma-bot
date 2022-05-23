@@ -1,10 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
-
 const socketio = require('socket.io')(server);
-var app = express();
 
+// Express
+var app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -12,6 +12,7 @@ var server = app.listen(8080,"0.0.0.0", ()=>{
     console.log('Server is running on port number 8080')
 })
 
+// Socket
 var io = socketio.listen(server)
 
 io.on('connection',function(socket) {
@@ -19,7 +20,6 @@ io.on('connection',function(socket) {
     console.log(`Connection : SocketId = ${socket.id}`)
     
     socket.on('subscribe', function(data) {
-        console.log('subscribe trigged')
         const room_data = JSON.parse(data)
         const userName = room_data.userName;
         const roomName = room_data.roomName;
@@ -27,18 +27,17 @@ io.on('connection',function(socket) {
         socket.join(`${roomName}`)
         console.log(`Username : ${userName} joined Room Name : ${roomName}`)
         
-        io.to(`${roomName}`).emit('new_user', userName);
+        socket.broadcast.to(`${roomName}`).emit('new_user', userName);
 
     })
 
     socket.on('unsubscribe',function(data) {
-        console.log('unsubscribe trigged')
         const room_data = JSON.parse(data)
         const userName = room_data.userName;
         const roomName = room_data.roomName;
     
         console.log(`Username : ${userName} left Room Name : ${roomName}`)
-        socket.broadcast.to(`${roomName}`).emit('user_left',userName)
+        socket.broadcast.to(`${roomName}`).emit('user_left', userName)
         socket.leave(`${roomName}`)
     })
 

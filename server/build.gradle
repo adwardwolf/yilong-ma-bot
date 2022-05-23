@@ -1,0 +1,42 @@
+plugins {
+    id 'application'
+    id 'org.jetbrains.kotlin.jvm' version '1.6.20'
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.6.21'
+}
+
+apply {
+    from "$rootDir/config/ktlint.gradle"
+}
+
+group "com.wo1f"
+version "0.0.1"
+mainClassName = "com.wo1f.ApplicationKt"
+
+def isDevelopment = project.ext.has("development")
+applicationDefaultJvmArgs = ["-Dio.ktor.development=$isDevelopment"]
+
+repositories {
+    mavenCentral()
+    maven { url "https://maven.pkg.jetbrains.space/public/p/ktor/eap" }
+}
+
+dependencies {
+    implementation "io.ktor:ktor-server-content-negotiation:$ktor_version"
+    implementation "io.ktor:ktor-server-core-jvm:$ktor_version"
+    implementation "io.ktor:ktor-serialization-kotlinx-json:$ktor_version"
+    implementation "io.ktor:ktor-server-call-logging-jvm:$ktor_version"
+    implementation "io.ktor:ktor-server-host-common-jvm:$ktor_version"
+    implementation "io.ktor:ktor-server-status-pages-jvm:$ktor_version"
+    implementation "io.ktor:ktor-server-netty-jvm:$ktor_version"
+    implementation "ch.qos.logback:logback-classic:$logback_version"
+    testImplementation "io.ktor:ktor-server-tests-jvm:$ktor_version"
+    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+
+    implementation("org.litote.kmongo:kmongo:$kmongo_version")
+    implementation("org.litote.kmongo:kmongo-coroutine:$kmongo_version")
+
+    implementation("org.mongodb:mongodb-driver-sync:$mongodb_version")
+    implementation("org.mongodb:mongodb-driver-legacy:$mongodb_version")
+
+    implementation("io.insert-koin:koin-ktor:$koin_version")
+}

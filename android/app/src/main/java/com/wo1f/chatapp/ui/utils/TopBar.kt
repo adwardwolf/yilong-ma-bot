@@ -44,7 +44,7 @@ fun CustomTopAppBarIconStart(
                     contentDescription = contentDescription
                 )
             }
-            W500xh4Text(
+            W600xh3Text(
                 text = label,
                 maxLines = 1,
                 color = MaterialTheme.colors.onSurface
@@ -90,7 +90,7 @@ fun CustomTopAppBarIconStartAndEnd(
                         contentDescription = iconDescriptionStart
                     )
                 }
-                W500xh4Text(
+                W600xh3Text(
                     text = label,
                     maxLines = 1,
                     color = MaterialTheme.colors.onSurface

@@ -1,9 +1,11 @@
 package com.wo1f.chatapp.data.api
 
-import com.wo1f.chatapp.data.model.ConversationRq
+import com.wo1f.chatapp.data.model.conversation.ConversationRes
+import com.wo1f.chatapp.data.model.conversation.ConversationRq
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
+import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -23,4 +25,9 @@ interface ConversationService {
 
     @DELETE("conversation/[id]")
     suspend fun deleteConversation(@Path("id") id: String)
+
+    @GET("{name}/conversation")
+    suspend fun getConversations(
+        @Path("name") name: String
+    ): Response<List<ConversationRes>>
 }

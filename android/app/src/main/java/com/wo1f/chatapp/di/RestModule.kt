@@ -2,6 +2,7 @@ package com.wo1f.chatapp.di
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.wo1f.chatapp.data.api.CategoryService
 import com.wo1f.chatapp.data.api.ConversationService
 import com.wo1f.chatapp.utils.Constants
 import dagger.Module
@@ -28,5 +29,10 @@ object RestModule {
     @Provides
     fun provideConversationService(retrofit: Retrofit): ConversationService {
         return retrofit.create(ConversationService::class.java)
+    }
+
+    @Provides
+    fun provideCategoryService(retrofit: Retrofit): CategoryService {
+        return retrofit.create(CategoryService::class.java)
     }
 }

@@ -21,7 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.wo1f.chatapp.R
-import com.wo1f.chatapp.data.Chat
+import com.wo1f.chatapp.data.model.Chat
 import com.wo1f.chatapp.utils.toAppTime
 
 @Composable

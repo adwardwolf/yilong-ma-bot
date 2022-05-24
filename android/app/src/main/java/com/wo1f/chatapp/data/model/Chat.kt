@@ -1,4 +1,4 @@
-package com.wo1f.chatapp.data
+package com.wo1f.chatapp.data.model
 
 import java.time.LocalTime
 

@@ -1,7 +1,9 @@
 package com.wo1f.data.collections
 
+import com.wo1f.Connection.conversations
 import com.wo1f.Connection.conversationsDb
 import com.wo1f.domain.models.ConversationDb
+import com.wo1f.domain.models.ConversationRes
 import com.wo1f.domain.models.ConversationRq
 import com.wo1f.domain.models.toDbObject
 import org.bson.types.ObjectId
@@ -31,5 +33,13 @@ class ConversationCollection {
     suspend fun deleteConversation(objectId: String): Boolean {
         val result = conversationsDb.deleteOne(ConversationDb::id eq ObjectId(objectId))
         return result.wasAcknowledged()
+    }
+
+    suspend fun getAllConversations(): List<ConversationRes> {
+        return conversations.find().toList()
+    }
+
+    suspend fun getConversationByName(name: String): List<ConversationRes> {
+        return conversations.find(ConversationDb::category eq name).toList()
     }
 }

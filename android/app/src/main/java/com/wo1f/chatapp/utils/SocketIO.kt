@@ -2,9 +2,9 @@ package com.wo1f.chatapp.utils
 
 import android.util.Log
 import com.google.gson.Gson
-import com.wo1f.chatapp.data.Chat
-import com.wo1f.chatapp.data.ChatRes
-import com.wo1f.chatapp.data.JoinChat
+import com.wo1f.chatapp.data.model.Chat
+import com.wo1f.chatapp.data.model.ChatRes
+import com.wo1f.chatapp.data.model.JoinChat
 import io.socket.client.IO
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
@@ -21,7 +21,6 @@ class SocketIO {
 
     init {
         try {
-//            mSocket = IO.socket("http://192.168.3.42:8080")
             mSocket = IO.socket(Constants.BASE_URL + Constants.SOCKET_PORT)
             mSocket.apply {
                 connect()

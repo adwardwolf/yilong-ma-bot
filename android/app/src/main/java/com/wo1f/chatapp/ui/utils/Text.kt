@@ -45,16 +45,18 @@ fun W600xh3Text(
 }
 
 @Composable
-fun W500xh3Text(
+fun W600xh4Text(
+    modifier: Modifier = Modifier,
     text: String,
     textAlign: TextAlign? = null,
     color: Color = Color.Unspecified,
     maxLines: Int = Int.MAX_VALUE,
 ) {
     Text(
+        modifier = modifier,
         text = text,
-        style = MaterialTheme.typography.h3,
-        fontWeight = FontWeight.W500,
+        style = MaterialTheme.typography.h4,
+        fontWeight = FontWeight.W600,
         textAlign = textAlign,
         color = color,
         overflow = TextOverflow.Ellipsis,

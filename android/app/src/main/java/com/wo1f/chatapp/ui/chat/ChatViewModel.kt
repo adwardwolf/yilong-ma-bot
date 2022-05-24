@@ -1,7 +1,7 @@
 package com.wo1f.chatapp.ui.chat
 
 import androidx.lifecycle.ViewModel
-import com.wo1f.chatapp.data.Chat
+import com.wo1f.chatapp.data.model.Chat
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

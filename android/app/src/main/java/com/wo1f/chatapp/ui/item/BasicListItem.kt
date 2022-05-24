@@ -1,4 +1,4 @@
-package com.wo1f.chatapp.ui.utils
+package com.wo1f.chatapp.ui.item
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -15,13 +15,14 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
-import com.wo1f.chatapp.R
+import com.wo1f.chatapp.ui.utils.W600xh3Text
 
 @Composable
-fun UserTemplate(
+fun BasicListItem(
     name: String,
+    painter: Painter,
     onClick: () -> Unit,
 ) {
     Surface(
@@ -44,13 +45,13 @@ fun UserTemplate(
                     color = MaterialTheme.colors.onPrimary
                 ) {
                     Image(
-                        modifier = Modifier.size(40.dp),
-                        painter = painterResource(id = R.drawable.ic_bot_profile),
+                        modifier = Modifier.size(50.dp).padding(6.dp),
+                        painter = painter,
                         contentDescription = null
                     )
                 }
             }
-            W600xh5Text(text = "@$name", maxLines = 1)
+            W600xh3Text(text = "@$name", maxLines = 1)
         }
     }
 }

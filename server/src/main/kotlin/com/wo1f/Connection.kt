@@ -1,6 +1,8 @@
 package com.wo1f
 
 import com.mongodb.client.MongoDatabase
+import com.wo1f.domain.models.CategoryDb
+import com.wo1f.domain.models.CategoryRes
 import com.wo1f.domain.models.ConversationDb
 import com.wo1f.domain.models.ConversationRes
 import org.litote.kmongo.KMongo
@@ -10,8 +12,11 @@ object Connection {
     private const val connectionString = "mongodb://localhost:27017/chatterbot-database"
     private val client = KMongo.createClient(connectionString)
     private val chatterbot: MongoDatabase = client.getDatabase(Databases.CHATTERBOT)
+
     val conversations = chatterbot.getCollection<ConversationRes>(Collections.CONVERSATIONS)
     val conversationsDb = chatterbot.getCollection<ConversationDb>(Collections.CONVERSATIONS)
+    val categories = chatterbot.getCollection<CategoryRes>(Collections.CATEGORIES)
+    val categoriesDb = chatterbot.getCollection<CategoryDb>(Collections.CATEGORIES)
 }
 
 object Databases {
@@ -20,4 +25,5 @@ object Databases {
 
 object Collections {
     const val CONVERSATIONS = "conversations"
+    const val CATEGORIES = "categories"
 }

@@ -1,4 +1,4 @@
-package com.wo1f.chatapp.data.model
+package com.wo1f.chatapp.data.model.conversation
 
 import com.google.gson.annotations.SerializedName
 

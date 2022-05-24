@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
-import com.wo1f.chatapp.data.Chat
+import com.wo1f.chatapp.data.model.Chat
 import com.wo1f.chatapp.ui.utils.ChatBottomBar
 import com.wo1f.chatapp.ui.utils.ChatItem
 import com.wo1f.chatapp.ui.utils.CustomTopAppBarIconStart

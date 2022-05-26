@@ -5,12 +5,16 @@ import com.wo1f.domain.models.CategoryRq
 
 interface InsertCategory {
 
-    suspend operator fun invoke(categoryRq: CategoryRq): Boolean
+    suspend operator fun invoke(categoryRq: CategoryRq)
 }
 
 class InsertCategoryImpl(private val dataSource: CategoryDataSource) : InsertCategory {
 
-    override suspend fun invoke(categoryRq: CategoryRq): Boolean {
-        return dataSource.insertCategory(categoryRq)
+    override suspend fun invoke(categoryRq: CategoryRq) {
+        dataSource.insertCategory(
+            categoryRq.apply {
+                name = name.lowercase().trim()
+            }
+        )
     }
 }

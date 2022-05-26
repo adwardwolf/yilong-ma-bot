@@ -1,5 +1,6 @@
 package com.wo1f.chatapp.data.api
 
+import com.wo1f.chatapp.data.model.BaseResponse
 import com.wo1f.chatapp.data.model.conversation.ConversationRes
 import com.wo1f.chatapp.data.model.conversation.ConversationRq
 import retrofit2.Response
@@ -15,19 +16,19 @@ interface ConversationService {
     @POST("conversation")
     suspend fun addConversation(
         @Body body: ConversationRq
-    ): Response<Unit>
+    ): Response<BaseResponse<Unit>>
 
-    @PATCH("conversation/[id]")
+    @PATCH("conversation/{id}")
     suspend fun updateConversation(
         @Path("id") id: String,
         @Body body: ConversationRq
-    ): Response<Unit>
+    ): Response<BaseResponse<Unit>>
 
-    @DELETE("conversation/[id]")
-    suspend fun deleteConversation(@Path("id") id: String)
+    @DELETE("conversation/{id}")
+    suspend fun deleteConversation(@Path("id") id: String): Response<BaseResponse<Unit>>
 
     @GET("{name}/conversation")
     suspend fun getConversations(
         @Path("name") name: String
-    ): Response<List<ConversationRes>>
+    ): Response<BaseResponse<List<ConversationRes>>>
 }

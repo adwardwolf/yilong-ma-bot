@@ -13,10 +13,10 @@ object Connection {
     private val client = KMongo.createClient(connectionString)
     private val chatterbot: MongoDatabase = client.getDatabase(Databases.CHATTERBOT)
 
-    val conversations = chatterbot.getCollection<ConversationRes>(Collections.CONVERSATIONS)
-    val conversationsDb = chatterbot.getCollection<ConversationDb>(Collections.CONVERSATIONS)
-    val categories = chatterbot.getCollection<CategoryRes>(Collections.CATEGORIES)
-    val categoriesDb = chatterbot.getCollection<CategoryDb>(Collections.CATEGORIES)
+    val conversationsColl = chatterbot.getCollection<ConversationRes>(Collections.CONVERSATIONS)
+    val conversationsDbColl = chatterbot.getCollection<ConversationDb>(Collections.CONVERSATIONS)
+    val categoriesColl = chatterbot.getCollection<CategoryRes>(Collections.CATEGORIES)
+    val categoriesDbColl = chatterbot.getCollection<CategoryDb>(Collections.CATEGORIES)
 }
 
 object Databases {

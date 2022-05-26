@@ -1,10 +1,11 @@
 package com.wo1f.routes
 
 import com.wo1f.data.inject.inject
+import com.wo1f.domain.models.BaseResponse
 import com.wo1f.domain.models.ConversationRq
 import com.wo1f.domain.usecases.conversation.DeleteConversation
 import com.wo1f.domain.usecases.conversation.GetAllConversations
-import com.wo1f.domain.usecases.conversation.GetConversationsByName
+import com.wo1f.domain.usecases.conversation.GetConversationsByCategory
 import com.wo1f.domain.usecases.conversation.InsertConversation
 import com.wo1f.domain.usecases.conversation.UpdateConversation
 import io.ktor.http.HttpStatusCode
@@ -24,7 +25,7 @@ fun Application.registerConversationRoutes() {
     val updateConversation by inject<UpdateConversation>()
     val deleteConversation by inject<DeleteConversation>()
     val getAllConversations by inject<GetAllConversations>()
-    val getConversationsByName by inject<GetConversationsByName>()
+    val getConversationsByCategory by inject<GetConversationsByCategory>()
 
     routing {
         conversationRoutes(
@@ -32,7 +33,7 @@ fun Application.registerConversationRoutes() {
             updateConversation,
             deleteConversation,
             getAllConversations,
-            getConversationsByName
+            getConversationsByCategory
         )
     }
 }
@@ -42,43 +43,31 @@ fun Route.conversationRoutes(
     updateConversation: UpdateConversation,
     deleteConversation: DeleteConversation,
     getAllConversations: GetAllConversations,
-    getConversationsByName: GetConversationsByName
+    getConversationsByCategory: GetConversationsByCategory
 ) {
 
     post<ConversationRq>("/conversation") { request ->
-        val success = insertConversation(request)
-        if (success) {
-            call.respond(HttpStatusCode.Created)
-        } else {
-            call.respond(HttpStatusCode.InternalServerError)
-        }
+        insertConversation(request)
+        call.respond(HttpStatusCode.Created, BaseResponse<Unit>())
     }
 
     patch<ConversationRq>("/conversation/{id}") { request ->
         val id = call.parameters["id"]
         if (id != null) {
-            val success = updateConversation(id, request)
-            if (success) {
-                call.respond(HttpStatusCode.NoContent)
-            } else {
-                call.respond(HttpStatusCode.InternalServerError)
-            }
+            updateConversation(id, request)
+            call.respond(HttpStatusCode.NoContent, BaseResponse<Unit>())
         } else {
-            call.respond(HttpStatusCode.BadRequest)
+            call.respond(HttpStatusCode.BadRequest, BaseResponse<Unit>())
         }
     }
 
     delete("/conversation/{id}") {
         val id = call.parameters["id"]
         if (id != null) {
-            val success = deleteConversation(id)
-            if (success) {
-                call.respond(HttpStatusCode.NoContent)
-            } else {
-                call.respond(HttpStatusCode.InternalServerError)
-            }
+            deleteConversation(id)
+            call.respond(HttpStatusCode.NoContent, BaseResponse<Unit>())
         } else {
-            call.respond(HttpStatusCode.BadRequest)
+            call.respond(HttpStatusCode.BadRequest, BaseResponse<Unit>())
         }
     }
 
@@ -87,13 +76,13 @@ fun Route.conversationRoutes(
         if (name != null) {
             if (name == "all") {
                 val result = getAllConversations()
-                call.respond(HttpStatusCode.OK, result)
+                call.respond(HttpStatusCode.OK, BaseResponse(result))
             } else {
-                val result = getConversationsByName(name)
-                call.respond(HttpStatusCode.OK, result)
+                val result = getConversationsByCategory(name)
+                call.respond(HttpStatusCode.OK, BaseResponse(result))
             }
         } else {
-            call.respond(HttpStatusCode.BadRequest)
+            call.respond(HttpStatusCode.BadRequest, BaseResponse<Unit>())
         }
     }
 }

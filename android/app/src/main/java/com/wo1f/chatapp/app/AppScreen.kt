@@ -6,7 +6,7 @@ sealed class AppScreen(val route: String) {
 
     object Chat : AppScreen("/chat")
 
-    object Conversation : AppScreen("/category/conversation/{name}")
+    object Conversation : AppScreen("/category/{name}/conversation")
 
     object Category : AppScreen("/category")
 }

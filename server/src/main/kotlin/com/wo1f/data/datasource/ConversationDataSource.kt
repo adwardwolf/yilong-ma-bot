@@ -1,43 +1,34 @@
 package com.wo1f.data.datasource
 
+import com.wo1f.data.collections.CategoryCollection
 import com.wo1f.data.collections.ConversationCollection
 import com.wo1f.domain.models.ConversationRes
 import com.wo1f.domain.models.ConversationRq
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.withContext
 
 class ConversationDataSource(
-    private val dispatcher: CoroutineDispatcher,
-    private val collection: ConversationCollection
+    private val collection: ConversationCollection,
+    private val categoryCollection: CategoryCollection
 ) {
 
-    suspend fun insertConversation(conversationRq: ConversationRq): Boolean {
-        return withContext(dispatcher) {
-            collection.insertConversation(conversationRq)
-        }
+    suspend fun insertConversation(conversationRq: ConversationRq) {
+        collection.insertConversation(conversationRq)
+        categoryCollection.increaseCategoryCount(conversationRq.category)
     }
 
-    suspend fun updateConversation(objectId: String, conversationRq: ConversationRq): Boolean {
-        return withContext(dispatcher) {
-            collection.updateConversation(objectId, conversationRq)
-        }
+    suspend fun updateConversation(objectId: String, conversationRq: ConversationRq) {
+        collection.updateConversation(objectId, conversationRq)
     }
 
-    suspend fun deleteConversation(objectId: String): Boolean {
-        return withContext(dispatcher) {
-            collection.deleteConversation(objectId)
-        }
+    suspend fun deleteConversation(objectId: String) {
+        val conversation = collection.deleteConversation(objectId)
+        categoryCollection.decreaseCategoryCount(conversation.category)
     }
 
     suspend fun getConversations(): List<ConversationRes> {
-        return withContext(dispatcher) {
-            collection.getAllConversations()
-        }
+        return collection.getAllConversations()
     }
 
-    suspend fun getConversationByName(name: String): List<ConversationRes> {
-        return withContext(dispatcher) {
-            collection.getConversationByName(name)
-        }
+    suspend fun getConversationByCategory(name: String): List<ConversationRes> {
+        return collection.getConversationByName(name)
     }
 }

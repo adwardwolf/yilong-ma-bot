@@ -6,19 +6,33 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.VisualTransformation
+import kotlinx.coroutines.delay
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun CustomOutlineTextField(
     modifier: Modifier = Modifier,
     value: String,
     label: String,
     shouldBeEnabled: Boolean = true,
+    showKeyboard: Boolean? = false,
     onValueChange: (String) -> Unit,
 ) {
+    val focusRequester = remember { FocusRequester() }
+    val keyboard = LocalSoftwareKeyboardController.current
+
     OutlinedTextField(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .focusRequester(focusRequester),
         value = value,
         textStyle = MaterialTheme.typography.body2,
         enabled = shouldBeEnabled,
@@ -38,4 +52,12 @@ fun CustomOutlineTextField(
             cursorColor = MaterialTheme.colors.secondary
         )
     )
+
+    LaunchedEffect(focusRequester) {
+        if (showKeyboard == true) {
+            focusRequester.requestFocus()
+            delay(100)
+            keyboard?.show()
+        }
+    }
 }

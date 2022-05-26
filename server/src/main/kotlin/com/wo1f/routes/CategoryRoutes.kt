@@ -1,6 +1,7 @@
 package com.wo1f.routes
 
 import com.wo1f.data.inject.inject
+import com.wo1f.domain.models.BaseResponse
 import com.wo1f.domain.models.CategoryRq
 import com.wo1f.domain.usecases.category.GetCategories
 import com.wo1f.domain.usecases.category.InsertCategory
@@ -32,16 +33,12 @@ fun Route.conversationRoutes(
 ) {
 
     post<CategoryRq>("/category") { request ->
-        val success = insertCategory(request)
-        if (success) {
-            call.respond(HttpStatusCode.Created)
-        } else {
-            call.respond(HttpStatusCode.InternalServerError)
-        }
+        insertCategory(request)
+        call.respond(HttpStatusCode.Created, BaseResponse<Unit>())
     }
 
     get("/category") {
         val result = getCategories()
-        call.respond(HttpStatusCode.OK, result)
+        call.respond(HttpStatusCode.OK, BaseResponse(result))
     }
 }

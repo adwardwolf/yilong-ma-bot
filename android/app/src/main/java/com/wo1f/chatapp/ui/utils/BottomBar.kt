@@ -27,6 +27,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -34,6 +35,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.wo1f.chatapp.R
 
 @ExperimentalComposeUiApi
 @Composable
@@ -83,7 +85,10 @@ fun ChatBottomBar(
                         fontSize = 14.sp
                     ),
                     cursorBrush = Brush.horizontalGradient(
-                        listOf(MaterialTheme.colors.secondary, MaterialTheme.colors.secondaryVariant)
+                        listOf(
+                            MaterialTheme.colors.secondary,
+                            MaterialTheme.colors.secondaryVariant
+                        )
                     ),
                 ) {
                     Surface(
@@ -98,7 +103,7 @@ fun ChatBottomBar(
                         ) {
                             if (text.isEmpty()) {
                                 Text(
-                                    text = "Write a message",
+                                    text = stringResource(id = R.string.write_message),
                                     style = MaterialTheme.typography.subtitle2,
                                     color = Color.LightGray
                                 )
@@ -123,7 +128,7 @@ fun ChatBottomBar(
                     onClick = { onSendClick(text) },
                 ) {
                     Text(
-                        text = "Send",
+                        text = stringResource(R.string.send),
                         modifier = Modifier
                             .fillMaxWidth()
                             .wrapContentHeight(),

@@ -3,6 +3,7 @@ package com.wo1f.chatapp.data.repo
 import com.wo1f.chatapp.data.DataResource
 import com.wo1f.chatapp.data.DataSourceResult
 import com.wo1f.chatapp.data.api.ConversationService
+import com.wo1f.chatapp.data.model.BaseResponse
 import com.wo1f.chatapp.data.model.conversation.ConversationRes
 import com.wo1f.chatapp.data.model.conversation.ConversationRq
 import kotlinx.coroutines.flow.Flow
@@ -15,7 +16,7 @@ class ConversationRepo @Inject constructor(private val service: ConversationServ
 
     suspend fun addConversation(body: ConversationRq): Flow<DataResource<*>> {
         return object : DataSourceResult<Unit>() {
-            override suspend fun apiCall(): Response<Unit> {
+            override suspend fun apiCall(): Response<BaseResponse<Unit>> {
                 return service.addConversation(body)
             }
         }.getResult()
@@ -23,8 +24,24 @@ class ConversationRepo @Inject constructor(private val service: ConversationServ
 
     suspend fun getConversations(name: String): Flow<DataResource<List<ConversationRes>>> {
         return object : DataSourceResult<List<ConversationRes>>() {
-            override suspend fun apiCall(): Response<List<ConversationRes>> {
+            override suspend fun apiCall(): Response<BaseResponse<List<ConversationRes>>> {
                 return service.getConversations(name)
+            }
+        }.getResult()
+    }
+
+    suspend fun updateConversation(id: String, body: ConversationRq): Flow<DataResource<*>> {
+        return object : DataSourceResult<Unit>() {
+            override suspend fun apiCall(): Response<BaseResponse<Unit>> {
+                return service.updateConversation(id, body)
+            }
+        }.getResult()
+    }
+
+    suspend fun deleteConversation(id: String): Flow<DataResource<*>> {
+        return object : DataSourceResult<Unit>() {
+            override suspend fun apiCall(): Response<BaseResponse<Unit>> {
+                return service.deleteConversation(id)
             }
         }.getResult()
     }

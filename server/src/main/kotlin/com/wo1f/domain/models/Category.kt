@@ -29,7 +29,7 @@ data class CategoryDb(
 
 @Serializable
 data class CategoryRq(
-    val name: String
+    var name: String
 )
 
 fun CategoryRq.toDbObject(): CategoryDb {

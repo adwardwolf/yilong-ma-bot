@@ -1,6 +1,5 @@
 package com.wo1f.chatapp.utils
 
-import android.util.Log
 import com.google.gson.Gson
 import com.wo1f.chatapp.data.model.Chat
 import com.wo1f.chatapp.data.model.ChatRes
@@ -9,6 +8,7 @@ import io.socket.client.IO
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
 import io.socket.engineio.client.EngineIOException
+import timber.log.Timber
 import java.time.LocalTime
 
 class SocketIO {
@@ -33,7 +33,7 @@ class SocketIO {
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            Log.d("fail", "Failed to connect: ${e.localizedMessage}")
+            Timber.d("fail", "Failed to connect: ${e.localizedMessage}")
         }
     }
 
@@ -46,7 +46,7 @@ class SocketIO {
 
     private val onConnectionError: Emitter.Listener
         get() = Emitter.Listener {
-            Log.d("SocketHandler", "Connection Error : $it")
+            Timber.d("SocketHandler", "Connection Error : $it")
             it.forEach { item ->
                 val exception = item as EngineIOException
                 print(exception.message + " " + exception.code + " " + exception.cause)
@@ -68,7 +68,7 @@ class SocketIO {
     private val onUpdateChat: Emitter.Listener
         get() = Emitter.Listener {
             val chatRes = gson.fromJson(it[0].toString(), ChatRes::class.java)
-            Log.d("chatRes", it[0].toString())
+            Timber.d("chatRes", it[0].toString())
             val chat = Chat(
                 name = chatRes.userName,
                 text = chatRes.text,

@@ -23,10 +23,12 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import com.wo1f.chatapp.R
 import com.wo1f.chatapp.data.model.Chat
 import com.wo1f.chatapp.ui.utils.ChatBottomBar
 import com.wo1f.chatapp.ui.utils.ChatItem
@@ -116,7 +118,7 @@ private fun ChatTopBar(goBack: () -> Unit) {
     CustomTopAppBarIconStart(
         imageVector = Icons.Default.ArrowBack,
         onClick = goBack,
-        label = "Chat"
+        label = stringResource(id = R.string.chat)
     )
 }
 
@@ -126,7 +128,6 @@ private fun ChatContent(
     chatList: List<Chat>,
     listState: LazyListState
 ) {
-
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()

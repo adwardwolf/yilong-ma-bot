@@ -1,5 +1,8 @@
 package com.wo1f.chatapp.data
 
+import com.wo1f.chatapp.R
+import com.wo1f.chatapp.data.model.BaseResponse
+import com.wo1f.chatapp.data.model.MsgCode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -29,7 +32,7 @@ abstract class DataSourceResult<T> {
         }
     }
 
-    abstract suspend fun apiCall(): Response<T>
+    abstract suspend fun apiCall(): Response<BaseResponse<T>>
 
     open suspend fun onSuccess(data: T? = null) {
     }
@@ -37,7 +40,10 @@ abstract class DataSourceResult<T> {
 
 sealed class DataResource<out T> {
     class Success<T>(val data: T? = null) : DataResource<T>()
-    class Error(val message: ErrorMessage) : DataResource<Nothing>()
+    class Error(
+        val msg: ErrorMessage? = null,
+        val dialogMsg: Int ? = null
+    ) : DataResource<Nothing>()
     object Loading : DataResource<Nothing>()
     object Empty : DataResource<Nothing>()
 
@@ -47,9 +53,9 @@ sealed class DataResource<out T> {
         }
     }
 
-    inline fun onFailure(block: (String) -> Unit): DataResource<T> = apply {
+    inline fun onFailure(block: (Int?, Int?) -> Unit): DataResource<T> = apply {
         if (this is Error) {
-            block(message.value)
+            block(msg?.value, dialogMsg)
         }
     }
 
@@ -60,17 +66,27 @@ sealed class DataResource<out T> {
     }
 }
 
-enum class ErrorMessage(val value: String) {
-    SOCKET_TIMEOUT("Socket timeout error"),
-    UNKNOWN("Unknown error occurred"),
-    UNAUTHENTICATED("Unauthenticated"),
-    EXCEPTION("Exception error"),
-    NOT_FOUND("Not found error")
+enum class ErrorMessage(val value: Int) {
+    SOCKET_TIMEOUT(R.string.error_socket_time_out),
+    UNKNOWN(R.string.error_unknown),
+    UNAUTHENTICATED(R.string.error_unauthenticated),
+    EXCEPTION(R.string.error_exception),
+    NOT_FOUND(R.string.error_not_found)
 }
 
-fun <T> Response<T>.getResult(): DataResource<T> {
-    return if (this.code() == 200 || this.code() == 201 || this.code() == 204) {
-        DataResource.Success(this.body())
+fun <T> Response<BaseResponse<T>>.getResult(): DataResource<T> {
+    return if (this.isSuccessful) {
+        val body = this.body()
+        if (body != null) {
+            val msgCode = body.msgCode
+            if (msgCode == 0) {
+                DataResource.Success(body.data)
+            } else {
+                DataResource.Error(dialogMsg = MsgCode.getMessageRes(msgCode))
+            }
+        } else {
+            DataResource.Success(null)
+        }
     } else if (this.code() == 401) {
         DataResource.Error(ErrorMessage.UNAUTHENTICATED)
     } else if (this.code() == 404) {

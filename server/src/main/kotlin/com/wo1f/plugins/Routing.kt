@@ -1,5 +1,6 @@
 package com.wo1f.plugins
 
+import com.wo1f.domain.models.BaseResponse
 import com.wo1f.routes.registerCategoryRoutes
 import com.wo1f.routes.registerConversationRoutes
 import io.ktor.http.HttpStatusCode
@@ -16,10 +17,22 @@ fun Application.configureRouting() {
         exception<AuthorizationException> { call, _ ->
             call.respond(HttpStatusCode.Forbidden)
         }
+        exception<DatabaseException> { call, _ ->
+            call.respond(HttpStatusCode.InternalServerError)
+        }
+        exception<ReturnException> { call, exception ->
+            call.respond(HttpStatusCode.OK, BaseResponse<Unit>(msgCode = exception.msgCode))
+        }
     }
 
     registerConversationRoutes()
     registerCategoryRoutes()
 }
+
 class AuthenticationException : RuntimeException()
+
 class AuthorizationException : RuntimeException()
+
+class DatabaseException(override val message: String) : RuntimeException(message)
+
+class ReturnException(val msgCode: Int) : RuntimeException()

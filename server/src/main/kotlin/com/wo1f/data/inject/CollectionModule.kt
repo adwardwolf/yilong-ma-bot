@@ -5,6 +5,6 @@ import com.wo1f.data.collections.ConversationCollection
 import org.koin.dsl.module
 
 val collectionModule = module {
-    single { ConversationCollection() }
-    single { CategoryCollection() }
+    single { ConversationCollection(get()) }
+    single { CategoryCollection(get()) }
 }

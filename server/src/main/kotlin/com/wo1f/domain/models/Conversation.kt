@@ -33,8 +33,8 @@ data class ConversationDb(
 
 @Serializable
 data class ConversationRq(
-    val question: String,
-    val answer: String,
+    var question: String,
+    var answer: String,
     val category: String
 )
 

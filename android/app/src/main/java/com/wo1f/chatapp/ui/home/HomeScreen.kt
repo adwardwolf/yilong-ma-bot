@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.wo1f.chatapp.R
 import com.wo1f.chatapp.ui.item.BasicListItem
@@ -44,7 +45,7 @@ private fun HomeTopBar() {
             modifier = Modifier.fillMaxWidth(),
             contentAlignment = Alignment.Center
         ) {
-            W600xh3Text(text = "Home")
+            W600xh3Text(text = stringResource(id = R.string.home))
         }
     }
 }
@@ -58,12 +59,12 @@ private fun HomeContent(
         modifier = Modifier.fillMaxWidth()
     ) {
         BasicListItem(
-            name = "Yilong Ma",
+            name = stringResource(id = R.string.yilong_ma),
             painter = painterResource(id = R.drawable.ic_bot_profile),
             onClick = goToChat
         )
         BasicListItem(
-            name = "Conversations",
+            name = stringResource(id = R.string.conversations),
             painter = painterResource(id = R.drawable.ic_teach_bot),
             onClick = goToConver
         )

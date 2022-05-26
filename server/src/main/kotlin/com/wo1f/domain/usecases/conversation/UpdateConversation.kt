@@ -5,12 +5,18 @@ import com.wo1f.domain.models.ConversationRq
 
 interface UpdateConversation {
 
-    suspend operator fun invoke(objectId: String, conversationRq: ConversationRq): Boolean
+    suspend operator fun invoke(objectId: String, conversationRq: ConversationRq)
 }
 
 class UpdateConversationImpl(private val dataSource: ConversationDataSource) : UpdateConversation {
 
-    override suspend fun invoke(objectId: String, conversationRq: ConversationRq): Boolean {
-        return dataSource.updateConversation(objectId, conversationRq)
+    override suspend fun invoke(objectId: String, conversationRq: ConversationRq) {
+        dataSource.updateConversation(
+            objectId = objectId,
+            conversationRq.apply {
+                this.question = question.trim()
+                this.answer = answer.trim()
+            }
+        )
     }
 }

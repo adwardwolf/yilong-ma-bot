@@ -1,3 +1,8 @@
+/**
+ * @author Adwardwo1f
+ * @created May 27, 2022
+ */
+
 package com.wo1f.plugins
 
 import com.wo1f.data.inject.Koin

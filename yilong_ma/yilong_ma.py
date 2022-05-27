@@ -1,3 +1,6 @@
+# @Author adwardwo1f
+# @Created May 27, 2022
+
 from chatterbot import ChatBot
 from chatterbot.trainers import ListTrainer
 import socketio

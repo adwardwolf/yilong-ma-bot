@@ -13,23 +13,24 @@ import org.bson.types.ObjectId
 import org.litote.kmongo.descending
 import org.litote.kmongo.eq
 import org.litote.kmongo.setTo
+import org.litote.kmongo.updateMany
 import org.litote.kmongo.updateOne
 
 class ConversationCollection(private val dispatcher: CoroutineDispatcher) {
 
-    suspend fun insertConversation(conversationRq: ConversationRq) {
+    suspend fun insertOne(conversationRq: ConversationRq) {
         return withContext(dispatcher) {
             val result = conversationsDbColl.insertOne(conversationRq.toDbObject())
             if (!result.wasAcknowledged()) {
-                throw DatabaseException("insertConversation failed")
+                throw DatabaseException("insertOne failed")
             }
         }
     }
 
-    suspend fun updateConversation(objectId: String, conversationRq: ConversationRq) {
+    suspend fun updateOne(id: String, conversationRq: ConversationRq) {
         return withContext(dispatcher) {
             val result = conversationsDbColl.updateOne(
-                filter = ConversationDb::id eq ObjectId(objectId),
+                filter = ConversationDb::id eq ObjectId(id),
                 updates = arrayOf(
                     ConversationDb::question setTo conversationRq.question,
                     ConversationDb::answer setTo conversationRq.answer,
@@ -37,19 +38,34 @@ class ConversationCollection(private val dispatcher: CoroutineDispatcher) {
                 )
             )
             if (!result.wasAcknowledged()) {
-                throw DatabaseException("updateConversation failed")
+                throw DatabaseException("updateOne failed")
             }
         }
     }
 
-    suspend fun deleteConversation(objectId: String): ConversationRes {
-        return withContext(dispatcher) {
-            val result = conversationsColl.findOneAndDelete(ConversationDb::id eq ObjectId(objectId))
-            result ?: throw DatabaseException("deleteConversation failed")
+    suspend fun updateToNewCategory(old: String, new: String) = withContext(dispatcher) {
+        val result = conversationsDbColl.updateMany(
+            filter = ConversationDb::category eq old,
+            updates = arrayOf(ConversationDb::category setTo new)
+        )
+        if (!result.wasAcknowledged()) {
+            throw DatabaseException("updateToNewCategory failed")
         }
     }
 
-    suspend fun getAllConversations(): List<ConversationRes> {
+    suspend fun deleteOne(id: String): ConversationRes = withContext(dispatcher) {
+        conversationsColl.findOneAndDelete(ConversationDb::id eq ObjectId(id))
+            ?: throw DatabaseException("deleteOne failed")
+    }
+
+    suspend fun deleteByCategory(category: String) = withContext(dispatcher) {
+        val result = conversationsColl.deleteMany(ConversationDb::category eq category)
+        if (!result.wasAcknowledged()) {
+            throw DatabaseException("deleteByCategory failed")
+        }
+    }
+
+    suspend fun getAll(): List<ConversationRes> {
         return withContext(dispatcher) {
             conversationsColl
                 .find()
@@ -58,7 +74,7 @@ class ConversationCollection(private val dispatcher: CoroutineDispatcher) {
         }
     }
 
-    suspend fun getConversationByName(name: String): List<ConversationRes> {
+    suspend fun getByCategory(name: String): List<ConversationRes> {
         return withContext(dispatcher) {
             conversationsColl
                 .find(ConversationDb::category eq name)

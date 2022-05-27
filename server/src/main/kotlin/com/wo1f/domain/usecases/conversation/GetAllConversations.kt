@@ -1,16 +1,16 @@
 package com.wo1f.domain.usecases.conversation
 
 import com.wo1f.data.datasource.ConversationDataSource
-import com.wo1f.domain.models.ConversationRes
+import com.wo1f.domain.models.GetConversationRes
 
 interface GetAllConversations {
 
-    suspend operator fun invoke(): List<ConversationRes>
+    suspend operator fun invoke(): GetConversationRes
 }
 
 class GetAllConversationsImpl(private val dataSource: ConversationDataSource) : GetAllConversations {
 
-    override suspend fun invoke(): List<ConversationRes> {
-        return dataSource.getConversations()
+    override suspend fun invoke(): GetConversationRes {
+        return dataSource.getAll()
     }
 }

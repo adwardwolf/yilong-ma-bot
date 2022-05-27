@@ -11,7 +11,7 @@ interface InsertCategory {
 class InsertCategoryImpl(private val dataSource: CategoryDataSource) : InsertCategory {
 
     override suspend fun invoke(categoryRq: CategoryRq) {
-        dataSource.insertCategory(
+        dataSource.insertOne(
             categoryRq.apply {
                 name = name.lowercase().trim()
             }

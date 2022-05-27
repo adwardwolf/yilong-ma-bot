@@ -1,16 +1,25 @@
 package com.wo1f.chatapp.ui.conversations
 
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.wo1f.chatapp.data.DataResource
+import com.wo1f.chatapp.data.model.category.CategoryRes
+import com.wo1f.chatapp.data.model.category.CategoryRq
 import com.wo1f.chatapp.data.model.conversation.ConversationRes
 import com.wo1f.chatapp.data.model.conversation.ConversationRq
+import com.wo1f.chatapp.data.model.conversation.GetConversationRes
+import com.wo1f.chatapp.data.repo.CategoryRepo
 import com.wo1f.chatapp.data.repo.ConversationRepo
-import com.wo1f.chatapp.ui.BaseUiState
+import com.wo1f.chatapp.ui.ConverAction
+import com.wo1f.chatapp.ui.base.BaseViewModel
+import com.wo1f.chatapp.ui.model.OneTFDialogType
+import com.wo1f.chatapp.ui.model.State
 import com.wo1f.chatapp.ui.model.TwoActionDialogType
-import com.wo1f.chatapp.ui.state.ErrorDialogState
-import com.wo1f.chatapp.ui.state.TwoActionDialogState
+import com.wo1f.chatapp.ui.model.UiState
+import com.wo1f.chatapp.ui.state.DialogState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -18,146 +27,136 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ConverViewModel @Inject constructor(
-    private val repo: ConversationRepo,
+    private val converRepo: ConversationRepo,
+    private val categoryRepo: CategoryRepo,
     savedStateHandle: SavedStateHandle
-) : ViewModel() {
+) : BaseViewModel<ConverState, ConverAction, GetConversationRes>() {
 
-    val name: String = savedStateHandle.get<String>("name")
-        ?: throw IllegalStateException("Category can't be empty")
-    private val _baseState = MutableStateFlow<BaseUiState<ConverState>>(BaseUiState())
-    val baseState = _baseState.asStateFlow()
-    private val _actionState = MutableStateFlow<BaseUiState<ConverState>>(BaseUiState())
-    val actionState = _actionState.asStateFlow()
-    private val _errorErrorDialogState = MutableStateFlow(ErrorDialogState())
-    val errorDialogState = _errorErrorDialogState.asStateFlow()
+    private val _name = MutableStateFlow(
+        savedStateHandle.get<String>("name")
+            ?: throw IllegalStateException("Category can't be empty")
+    )
+    val name = _name.asStateFlow()
+    private val _category = MutableStateFlow<CategoryRes?>(null)
+    val category = _category.asStateFlow()
     private val _question = MutableStateFlow("")
     val question = _question.asStateFlow()
     private val _answer = MutableStateFlow("")
     val answer = _answer.asStateFlow()
-    private val _showAddConverAD = MutableStateFlow(false)
-    val showAddConverAD = _showAddConverAD.asStateFlow()
-    private val _showUpdateConverAD = MutableStateFlow(false)
-    val showUpdateConverAD = _showUpdateConverAD.asStateFlow()
+    private val _showAddConverDialog = MutableStateFlow(false)
+    val showAddConverDialog = _showAddConverDialog.asStateFlow()
+    private val _showUpdateConverDialog = MutableStateFlow(false)
+    val showUpdateConverDialog = _showUpdateConverDialog.asStateFlow()
     private val _clickedItem = MutableStateFlow<ConversationRes?>(null)
     val clickedItem = _clickedItem.asStateFlow()
-    private val _twoActionDialogState = MutableStateFlow(TwoActionDialogState())
+    private val _twoActionDialogState = MutableStateFlow(DialogState<TwoActionDialogType>())
     val twoActionDialogState = _twoActionDialogState.asStateFlow()
+    private val _oneTFDialogState = MutableStateFlow(DialogState<OneTFDialogType>())
+    val oneTFDialogState = _oneTFDialogState.asStateFlow()
+    private val _categoryName = MutableStateFlow("")
+    val categoryName = _categoryName.asStateFlow()
+    private val _listState = MutableStateFlow(LazyListState())
+    val listState = _listState
 
-    init {
-        getConverList()
+    override suspend fun repoCall(): Flow<DataResource<GetConversationRes>> {
+        return converRepo.getConversations(_name.value)
     }
 
-    private fun getConverList() {
+    override suspend fun onLoadSuccess(data: GetConversationRes) {
+        emitState { UiState.success(ConverState(data)) }
+        _category.emit(data.category)
+    }
+
+    override suspend fun onRefreshSuccess(data: GetConversationRes) {
+        emitState { UiState.success(ConverState(data)) }
+        _category.emit(data.category)
+    }
+
+    internal fun add(question: String, answer: String) {
+        val request = ConversationRq(question, answer, _name.value)
         viewModelScope.launch {
-            repo.getConversations(name).collect { result ->
-                result.onSuccess { data ->
-                    if (data != null) {
-                        _baseState.emit(BaseUiState.success(ConverState(data)))
-                    }
-                }.onFailure { msg, dialogMsg ->
-                    _baseState.emit(BaseUiState.error(msg, dialogMsg))
-                }.onLoading {
-                    _baseState.emit(BaseUiState.loading())
-                }
+            converRepo.addConversation(request).collect { result ->
+                result.handleActionResult(ConverAction.Add)
             }
         }
     }
 
-    fun addConversation(question: String, answer: String) {
-        val request = ConversationRq(question, answer, name)
-        viewModelScope.launch {
-            repo.addConversation(request).collect { result ->
-                result.onSuccess {
-                    _actionState.emit(BaseUiState.success(ConverState(null)))
-                    getConverList()
-                }.onFailure { msg, dialogMsg ->
-                    _actionState.emit(BaseUiState.error(msg, dialogMsg))
-                    if (dialogMsg != null) {
-                        _errorErrorDialogState.emit(ErrorDialogState.show(dialogMsg))
-                    }
-                }.onLoading {
-                    _actionState.emit(BaseUiState.loading())
-                }
-            }
-        }
-    }
-
-    fun updateConversation(question: String, answer: String) {
-        val request = ConversationRq(question, answer, name)
+    internal fun update(question: String, answer: String) {
+        val request = ConversationRq(question, answer, _name.value)
         viewModelScope.launch {
             _clickedItem.value?.id?.let { id ->
-                repo.updateConversation(id, request).collect { result ->
-                    result.onSuccess {
-                        _actionState.emit(BaseUiState.success(ConverState(null)))
-                        getConverList()
-                    }.onFailure { msg, dialogMsg ->
-                        _actionState.emit(BaseUiState.error(msg, dialogMsg))
-                        if (dialogMsg != null) {
-                            _errorErrorDialogState.emit(ErrorDialogState.show(dialogMsg))
-                        }
-                    }.onLoading {
-                        _actionState.emit(BaseUiState.loading())
-                    }
+                converRepo.updateConversation(id, request).collect { result ->
+                    result.handleActionResult(ConverAction.Update)
                 }
             }
         }
     }
 
-    private fun deleteConversation() {
+    private fun delete() {
         _clickedItem.value?.id?.let { id ->
             viewModelScope.launch {
-                repo.deleteConversation(id).collect { result ->
-                    result.onSuccess {
-                        _actionState.emit(BaseUiState.success(ConverState(null)))
-                        getConverList()
-                    }.onFailure { msg, dialogMsg ->
-                        _actionState.emit(BaseUiState.error(msg, dialogMsg))
-                        if (dialogMsg != null) {
-                            _errorErrorDialogState.emit(ErrorDialogState.show(dialogMsg))
-                        }
-                    }.onLoading {
-                        _actionState.emit(BaseUiState.loading())
-                    }
+                converRepo.deleteConversation(id).collect { result ->
+                    result.handleActionResult(ConverAction.Delete)
                 }
             }
         }
     }
 
-    fun onEditClick(item: ConversationRes) {
+    private fun updateCategory(newName: String) {
+        viewModelScope.launch {
+            categoryRepo.update(_name.value, CategoryRq(newName)).collect { result ->
+                result.handleActionResult(
+                    type = ConverAction.UpdateCategory,
+                    onSuccess = { _name.value = newName }
+                )
+            }
+        }
+    }
+
+    private fun deleteCategory() {
+        viewModelScope.launch {
+            categoryRepo.delete(_name.value).collect { result ->
+                result.handleActionResult(ConverAction.DeleteCategory)
+            }
+        }
+    }
+
+    internal fun onEditCategoryClick(item: ConversationRes) {
         setClickedItem(item)
         onQuestionChange(item.question)
         onAnswerChange(item.answer)
         setUpdateConverAD(true)
     }
 
-    fun onDeleteClick(item: ConversationRes) {
+    internal fun onDeleteCategoryClick(item: ConversationRes) {
         setClickedItem(item)
         showTwoActionDialog(TwoActionDialogType.Delete)
     }
 
-    fun setAddConverAD(value: Boolean) {
-        _showAddConverAD.value = value
-    }
-
-    fun setUpdateConverAD(value: Boolean) {
-        _showUpdateConverAD.value = value
-    }
-
-    fun onQuestionChange(value: String) {
+    internal fun onQuestionChange(value: String) {
         _question.value = value
     }
 
-    fun onAnswerChange(value: String) {
+    internal fun onAnswerChange(value: String) {
         _answer.value = value
     }
 
-    fun clearText() {
-        _question.value = ""
-        _answer.value = ""
+    internal fun onCategoryChange(value: String) {
+        _categoryName.value = value
     }
 
-    fun hideDialog() {
-        _errorErrorDialogState.value = ErrorDialogState.hide()
+    internal fun clearText() {
+        _question.value = ""
+        _answer.value = ""
+        _categoryName.value = ""
+    }
+
+    internal fun setAddConverAD(value: Boolean) {
+        _showAddConverDialog.value = value
+    }
+
+    internal fun setUpdateConverAD(value: Boolean) {
+        _showUpdateConverDialog.value = value
     }
 
     private fun setClickedItem(item: ConversationRes) {
@@ -165,20 +164,36 @@ class ConverViewModel @Inject constructor(
     }
 
     private fun showTwoActionDialog(type: TwoActionDialogType) {
-        _twoActionDialogState.value = TwoActionDialogState.show(type)
+        _twoActionDialogState.value = DialogState.show(type)
     }
 
-    fun hideTwoActionDialog() {
-        _twoActionDialogState.value = TwoActionDialogState.hide()
+    internal fun hideTwoActionDialog() {
+        _twoActionDialogState.value = DialogState.hide()
     }
 
-    fun onTwoDialogActionClick() {
+    internal fun onTwoDialogActionClick() {
         when (_twoActionDialogState.value.type) {
-            TwoActionDialogType.Delete -> deleteConversation()
+            is TwoActionDialogType.Delete -> delete()
+        }
+        hideTwoActionDialog()
+    }
+
+    internal fun showOneTFDialog(type: OneTFDialogType) {
+        _oneTFDialogState.value = DialogState.show(type)
+    }
+
+    internal fun hideOneTFDialog() {
+        _oneTFDialogState.value = DialogState.hide()
+    }
+
+    internal fun onOneTFDialogButtonClick(text: String) {
+        when (_oneTFDialogState.value.type) {
+            is OneTFDialogType.DeleteCategory -> deleteCategory()
+            is OneTFDialogType.UpdateCategory -> updateCategory(text)
         }
     }
 }
 
 data class ConverState(
-    val converList: List<ConversationRes>? = null
-)
+    val getConverRes: GetConversationRes? = null
+) : State

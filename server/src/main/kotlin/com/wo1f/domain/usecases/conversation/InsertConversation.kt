@@ -11,7 +11,7 @@ interface InsertConversation {
 class InsertConversationImpl(private val dataSource: ConversationDataSource) : InsertConversation {
 
     override suspend fun invoke(conversationRq: ConversationRq) {
-        dataSource.insertConversation(
+        dataSource.insertOne(
             conversationRq.apply {
                 this.answer = answer.trim()
                 this.question = question.trim()

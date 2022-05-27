@@ -6,5 +6,5 @@ import org.koin.dsl.module
 
 val datasourceModule = module {
     single { ConversationDataSource(get(), get()) }
-    single { CategoryDataSource(get()) }
+    single { CategoryDataSource(get(), get()) }
 }

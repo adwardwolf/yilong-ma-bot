@@ -1,4 +1,4 @@
-package com.wo1f.chatapp.ui.utils
+package com.wo1f.chatapp.ui.item
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -22,6 +22,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.wo1f.chatapp.R
 import com.wo1f.chatapp.data.model.Chat
+import com.wo1f.chatapp.ui.utils.W400xOverlineText
+import com.wo1f.chatapp.ui.utils.W400xh5Text
+import com.wo1f.chatapp.ui.utils.W400xh6Text
+import com.wo1f.chatapp.ui.utils.W600xh5Text
 import com.wo1f.chatapp.utils.toAppTime
 
 @Composable

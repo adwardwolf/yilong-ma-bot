@@ -29,6 +29,9 @@ fun Application.configureRouting() {
     registerCategoryRoutes()
 }
 
+val defaultResponse: BaseResponse<Unit>
+    get() = BaseResponse()
+
 class AuthenticationException : RuntimeException()
 
 class AuthorizationException : RuntimeException()

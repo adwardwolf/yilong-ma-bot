@@ -14,18 +14,34 @@ import javax.inject.Singleton
 @Singleton
 class CategoryRepo @Inject constructor(private val service: CategoryService) {
 
-    suspend fun getCategories(): Flow<DataResource<List<CategoryRes>>> {
+    suspend fun getAll(): Flow<DataResource<List<CategoryRes>>> {
         return object : DataSourceResult<List<CategoryRes>>() {
             override suspend fun apiCall(): Response<BaseResponse<List<CategoryRes>>> {
-                return service.getCategories()
+                return service.getAll()
             }
         }.getResult()
     }
 
-    suspend fun addCategory(body: CategoryRq): Flow<DataResource<Unit>> {
+    suspend fun insert(body: CategoryRq): Flow<DataResource<Unit>> {
         return object : DataSourceResult<Unit>() {
             override suspend fun apiCall(): Response<BaseResponse<Unit>> {
-                return service.insertCategory(body)
+                return service.insert(body)
+            }
+        }.getResult()
+    }
+
+    suspend fun update(name: String, body: CategoryRq): Flow<DataResource<Unit>> {
+        return object : DataSourceResult<Unit>() {
+            override suspend fun apiCall(): Response<BaseResponse<Unit>> {
+                return service.update(name, body)
+            }
+        }.getResult()
+    }
+
+    suspend fun delete(name: String): Flow<DataResource<Unit>> {
+        return object : DataSourceResult<Unit>() {
+            override suspend fun apiCall(): Response<BaseResponse<Unit>> {
+                return service.delete(name)
             }
         }.getResult()
     }

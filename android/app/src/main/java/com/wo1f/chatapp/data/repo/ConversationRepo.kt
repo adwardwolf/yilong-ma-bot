@@ -4,8 +4,8 @@ import com.wo1f.chatapp.data.DataResource
 import com.wo1f.chatapp.data.DataSourceResult
 import com.wo1f.chatapp.data.api.ConversationService
 import com.wo1f.chatapp.data.model.BaseResponse
-import com.wo1f.chatapp.data.model.conversation.ConversationRes
 import com.wo1f.chatapp.data.model.conversation.ConversationRq
+import com.wo1f.chatapp.data.model.conversation.GetConversationRes
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 import javax.inject.Inject
@@ -22,9 +22,9 @@ class ConversationRepo @Inject constructor(private val service: ConversationServ
         }.getResult()
     }
 
-    suspend fun getConversations(name: String): Flow<DataResource<List<ConversationRes>>> {
-        return object : DataSourceResult<List<ConversationRes>>() {
-            override suspend fun apiCall(): Response<BaseResponse<List<ConversationRes>>> {
+    suspend fun getConversations(name: String): Flow<DataResource<GetConversationRes>> {
+        return object : DataSourceResult<GetConversationRes>() {
+            override suspend fun apiCall(): Response<BaseResponse<GetConversationRes>> {
                 return service.getConversations(name)
             }
         }.getResult()

@@ -4,12 +4,12 @@ import com.wo1f.data.datasource.ConversationDataSource
 
 interface DeleteConversation {
 
-    suspend operator fun invoke(objectId: String)
+    suspend operator fun invoke(id: String)
 }
 
 class DeleteConversationImpl(private val dataSource: ConversationDataSource) : DeleteConversation {
 
-    override suspend fun invoke(objectId: String) {
-        dataSource.deleteConversation(objectId)
+    override suspend fun invoke(id: String) {
+        dataSource.deleteOne(id)
     }
 }

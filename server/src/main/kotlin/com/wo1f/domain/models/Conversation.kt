@@ -38,6 +38,12 @@ data class ConversationRq(
     val category: String
 )
 
+@Serializable
+data class GetConversationRes(
+    val category: CategoryRes,
+    val conversations: List<ConversationRes>
+)
+
 fun ConversationRq.toDbObject(): ConversationDb {
     return ConversationDb(
         id = ObjectId.get(),

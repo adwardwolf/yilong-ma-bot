@@ -129,7 +129,7 @@ fun W400xh6Text(
     modifier: Modifier = Modifier,
     text: String,
     textAlign: TextAlign? = null,
-    color: Color = MaterialTheme.colors.onSurface,
+    color: Color = Color.Unspecified,
     maxLines: Int = Int.MAX_VALUE
 ) {
     Text(

@@ -16,32 +16,40 @@ fun AppNavigation(navController: NavHostController) {
 
         composable(AppScreen.Home.route) {
             HomeScreen(
-                goToChat = { navController.navigate(AppScreen.Chat.route) },
-                goToCategory = { navController.navigate(AppScreen.Category.route) }
+                goToChat = navController::navigateToChat,
+                goToCategory = navController::navigateToCategory
             )
         }
 
         composable(AppScreen.Chat.route) {
             ChatScreen(
-                goBack = { navController.popBackStack() }
+                goBack = navController::popBackStack
             )
         }
 
         composable(AppScreen.Conversation.route) {
             ConverScreen(
-                goBack = { navController.popBackStack() }
+                goBack = navController::popBackStack
             )
         }
 
         composable(AppScreen.Category.route) {
             CategoryScreen(
-                goBack = { navController.popBackStack() },
-                goToConver = { name ->
-                    navController.navigate(
-                        AppScreen.Conversation.route.replace("{name}", name)
-                    )
-                },
+                goBack = navController::popBackStack,
+                goToConver = navController::navigateToConversation,
             )
         }
     }
+}
+
+private fun NavHostController.navigateToConversation(name: String) {
+    this.navigate(AppScreen.Conversation.route.replace("{name}", name))
+}
+
+private fun NavHostController.navigateToChat() {
+    this.navigate(AppScreen.Chat.route)
+}
+
+private fun NavHostController.navigateToCategory() {
+    this.navigate(AppScreen.Category.route)
 }

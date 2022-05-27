@@ -11,6 +11,6 @@ interface GetCategories {
 class GetCategoriesImpl(private val dataSource: CategoryDataSource) : GetCategories {
 
     override suspend fun invoke(): List<CategoryRes> {
-        return dataSource.getCategories()
+        return dataSource.getAll()
     }
 }

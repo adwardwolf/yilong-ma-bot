@@ -8,6 +8,7 @@ import com.wo1f.domain.usecases.conversation.GetAllConversations
 import com.wo1f.domain.usecases.conversation.GetConversationsByCategory
 import com.wo1f.domain.usecases.conversation.InsertConversation
 import com.wo1f.domain.usecases.conversation.UpdateConversation
+import com.wo1f.plugins.defaultResponse
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
 import io.ktor.server.application.call
@@ -48,16 +49,16 @@ fun Route.conversationRoutes(
 
     post<ConversationRq>("/conversation") { request ->
         insertConversation(request)
-        call.respond(HttpStatusCode.Created, BaseResponse<Unit>())
+        call.respond(HttpStatusCode.Created, defaultResponse)
     }
 
     patch<ConversationRq>("/conversation/{id}") { request ->
         val id = call.parameters["id"]
         if (id != null) {
             updateConversation(id, request)
-            call.respond(HttpStatusCode.NoContent, BaseResponse<Unit>())
+            call.respond(HttpStatusCode.NoContent, defaultResponse)
         } else {
-            call.respond(HttpStatusCode.BadRequest, BaseResponse<Unit>())
+            call.respond(HttpStatusCode.BadRequest, defaultResponse)
         }
     }
 
@@ -65,9 +66,9 @@ fun Route.conversationRoutes(
         val id = call.parameters["id"]
         if (id != null) {
             deleteConversation(id)
-            call.respond(HttpStatusCode.NoContent, BaseResponse<Unit>())
+            call.respond(HttpStatusCode.NoContent, defaultResponse)
         } else {
-            call.respond(HttpStatusCode.BadRequest, BaseResponse<Unit>())
+            call.respond(HttpStatusCode.BadRequest, defaultResponse)
         }
     }
 

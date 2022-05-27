@@ -112,3 +112,37 @@ fun CustomTopAppBarIconStartAndEnd(
         }
     }
 }
+
+@Composable
+fun CustomTopAppBarIconStartAndEnd(
+    label: String,
+    startContent: @Composable () -> Unit,
+    endContent: @Composable () -> Unit
+) {
+    TopAppBar(
+        backgroundColor = MaterialTheme.colors.background,
+        contentColor = MaterialTheme.colors.onBackground,
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(start = 12.dp, end = 12.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Row(
+                modifier = Modifier.wrapContentSize(Alignment.TopStart),
+                horizontalArrangement = Arrangement.spacedBy(32.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                startContent()
+                W600xh3Text(
+                    text = label,
+                    maxLines = 1,
+                    color = MaterialTheme.colors.onSurface
+                )
+            }
+            endContent()
+        }
+    }
+}

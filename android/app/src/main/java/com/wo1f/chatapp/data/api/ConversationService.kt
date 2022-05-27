@@ -1,8 +1,8 @@
 package com.wo1f.chatapp.data.api
 
 import com.wo1f.chatapp.data.model.BaseResponse
-import com.wo1f.chatapp.data.model.conversation.ConversationRes
 import com.wo1f.chatapp.data.model.conversation.ConversationRq
+import com.wo1f.chatapp.data.model.conversation.GetConversationRes
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -30,5 +30,5 @@ interface ConversationService {
     @GET("{name}/conversation")
     suspend fun getConversations(
         @Path("name") name: String
-    ): Response<BaseResponse<List<ConversationRes>>>
+    ): Response<BaseResponse<GetConversationRes>>
 }

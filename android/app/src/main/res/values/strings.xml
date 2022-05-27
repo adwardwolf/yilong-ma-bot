@@ -11,9 +11,12 @@
     <string name="all">all</string>
     <string name="send">Send</string>
     <string name="add_new_category">Add new Category</string>
+    <string name="delete_category">Delete Category</string>
+    <string name="update_category">Update Category</string>
     <string name="add_new_conversation">Add new Conversation</string>
     <string name="update_conversation">Update Conversation</string>
     <string name="category">Category</string>
+    <string name="category_name">Category Name</string>
     <string name="conversations">Conversations</string>
     <string name="yilong_ma">Yilong Ma</string>
     <string name="category_colon">Category:</string>

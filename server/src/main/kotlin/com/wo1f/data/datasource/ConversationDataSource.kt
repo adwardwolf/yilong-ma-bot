@@ -2,33 +2,37 @@ package com.wo1f.data.datasource
 
 import com.wo1f.data.collections.CategoryCollection
 import com.wo1f.data.collections.ConversationCollection
-import com.wo1f.domain.models.ConversationRes
 import com.wo1f.domain.models.ConversationRq
+import com.wo1f.domain.models.GetConversationRes
 
 class ConversationDataSource(
     private val collection: ConversationCollection,
     private val categoryCollection: CategoryCollection
 ) {
 
-    suspend fun insertConversation(conversationRq: ConversationRq) {
-        collection.insertConversation(conversationRq)
-        categoryCollection.increaseCategoryCount(conversationRq.category)
+    suspend fun insertOne(conversationRq: ConversationRq) {
+        collection.insertOne(conversationRq)
+        categoryCollection.increaseCount(conversationRq.category, 1)
     }
 
-    suspend fun updateConversation(objectId: String, conversationRq: ConversationRq) {
-        collection.updateConversation(objectId, conversationRq)
+    suspend fun updateOne(objectId: String, conversationRq: ConversationRq) {
+        collection.updateOne(objectId, conversationRq)
     }
 
-    suspend fun deleteConversation(objectId: String) {
-        val conversation = collection.deleteConversation(objectId)
-        categoryCollection.decreaseCategoryCount(conversation.category)
+    suspend fun deleteOne(objectId: String) {
+        val conversation = collection.deleteOne(objectId)
+        categoryCollection.decreaseCount(conversation.category, -1)
     }
 
-    suspend fun getConversations(): List<ConversationRes> {
-        return collection.getAllConversations()
+    suspend fun getAll(): GetConversationRes {
+        val conversations = collection.getAll()
+        val category = categoryCollection.getByName("all")
+        return GetConversationRes(category, conversations)
     }
 
-    suspend fun getConversationByCategory(name: String): List<ConversationRes> {
-        return collection.getConversationByName(name)
+    suspend fun getByCategory(name: String): GetConversationRes {
+        val conversations = collection.getByCategory(name)
+        val category = categoryCollection.getByName(name)
+        return GetConversationRes(category, conversations)
     }
 }

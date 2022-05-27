@@ -1,5 +1,7 @@
 package com.wo1f.chatapp.ui.utils
 
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.FloatingActionButton
@@ -10,33 +12,43 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import com.wo1f.chatapp.R
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 
 @Composable
 fun CustomButton(
     modifier: Modifier = Modifier,
     text: String,
-    shouldBeEnabled: Boolean,
+    enabled: Boolean,
     isLoading: Boolean,
+    buttonColor: Color = MaterialTheme.colors.secondary,
+    textColor: Color = MaterialTheme.colors.primary,
     onClick: () -> Unit,
 ) {
     Button(
-        modifier = modifier.fillComponentsWidth(),
-        enabled = shouldBeEnabled,
+        modifier = modifier
+            .fillComponentsWidth()
+            .height(50.dp),
+        enabled = enabled,
         onClick = onClick,
         shape = MaterialTheme.shapes.medium,
         colors = ButtonDefaults.buttonColors(
-            backgroundColor = MaterialTheme.colors.secondary,
-            contentColor = MaterialTheme.colors.primary
+            backgroundColor = buttonColor,
+            contentColor = textColor
         )
     ) {
-        Text(
-            text = if (isLoading) {
-                stringResource(id = R.string.please_wait)
-            } else text,
-            style = MaterialTheme.typography.h3
-        )
+        if (isLoading) {
+            CircleLoadingPI(
+                modifier = Modifier.size(22.dp),
+                strokeWidth = 3.dp,
+                color = textColor
+            )
+        } else {
+            Text(
+                text = text,
+                style = MaterialTheme.typography.h3
+            )
+        }
     }
 }
 

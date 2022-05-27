@@ -30,8 +30,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.wo1f.chatapp.R
 import com.wo1f.chatapp.data.model.Chat
+import com.wo1f.chatapp.ui.item.ChatItem
 import com.wo1f.chatapp.ui.utils.ChatBottomBar
-import com.wo1f.chatapp.ui.utils.ChatItem
 import com.wo1f.chatapp.ui.utils.CustomTopAppBarIconStart
 import com.wo1f.chatapp.utils.SocketIO
 

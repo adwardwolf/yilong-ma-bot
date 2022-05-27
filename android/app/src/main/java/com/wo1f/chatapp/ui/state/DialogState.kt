@@ -1,7 +1,5 @@
 package com.wo1f.chatapp.ui.state
 
-import com.wo1f.chatapp.ui.model.TwoActionDialogType
-
 data class ErrorDialogState(
     val show: Boolean = false,
     val message: Int? = null
@@ -12,12 +10,12 @@ data class ErrorDialogState(
     }
 }
 
-data class TwoActionDialogState(
+data class DialogState<T>(
     val show: Boolean = false,
-    val type: TwoActionDialogType? = null
+    val type: T? = null
 ) {
     companion object {
-        fun show(type: TwoActionDialogType) = TwoActionDialogState(true, type)
-        fun hide() = TwoActionDialogState()
+        fun <T> show(type: T) = DialogState(true, type)
+        fun <T> hide() = DialogState<T>()
     }
 }

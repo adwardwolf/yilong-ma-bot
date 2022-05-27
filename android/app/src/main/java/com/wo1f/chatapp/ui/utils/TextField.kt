@@ -7,12 +7,17 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import kotlinx.coroutines.delay
 
@@ -28,16 +33,18 @@ fun CustomOutlineTextField(
 ) {
     val focusRequester = remember { FocusRequester() }
     val keyboard = LocalSoftwareKeyboardController.current
+    var textFieldValue by remember { mutableStateOf(TextFieldValue(value)) }
 
     OutlinedTextField(
         modifier = modifier
             .fillMaxWidth()
             .focusRequester(focusRequester),
-        value = value,
+        value = textFieldValue,
         textStyle = MaterialTheme.typography.body2,
         enabled = shouldBeEnabled,
         onValueChange = {
-            onValueChange(it)
+            textFieldValue = it
+            onValueChange(it.text)
         },
         label = { Text(label) },
         maxLines = 1,
@@ -58,6 +65,9 @@ fun CustomOutlineTextField(
             focusRequester.requestFocus()
             delay(100)
             keyboard?.show()
+
+            // Move cursor to the end of text
+            textFieldValue = textFieldValue.copy(selection = TextRange(value.length))
         }
     }
 }

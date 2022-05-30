@@ -29,6 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.wo1f.chatapp.R
 import com.wo1f.chatapp.ui.model.OneTFDialogType
 
 @Composable
@@ -63,7 +64,7 @@ fun OkDialog(
                         elevation = ButtonDefaults.elevation(0.dp)
                     ) {
                         Text(
-                            text = "Ok",
+                            text = stringResource(id = R.string.ok),
                             color = MaterialTheme.colors.onBackground
                         )
                     }
@@ -73,12 +74,15 @@ fun OkDialog(
     }
 }
 
+/**
+ * A dialog which has two actions. For example: a yes or no dialog
+ */
 @Composable
 fun TwoActionDialog(
     text: String,
     actionText: String,
     onCancelClick: () -> Unit,
-    onActionClick: () -> Unit
+    onPosClick: () -> Unit
 ) {
     Dialog(onDismissRequest = {}) {
         Surface(
@@ -109,12 +113,12 @@ fun TwoActionDialog(
                             elevation = ButtonDefaults.elevation(0.dp)
                         ) {
                             Text(
-                                text = "Cancel",
+                                text = stringResource(id = R.string.cancel),
                                 color = MaterialTheme.colors.onBackground
                             )
                         }
                         Button(
-                            onClick = onActionClick,
+                            onClick = onPosClick,
                             colors = ButtonDefaults.buttonColors(
                                 backgroundColor = MaterialTheme.colors.background
                             ),
@@ -132,6 +136,9 @@ fun TwoActionDialog(
     }
 }
 
+/**
+ * A dialog which has one text field and one button
+ */
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun OneTextFieldDialog(
@@ -186,7 +193,7 @@ fun OneTextFieldDialog(
                             enabled = buttonEnabled,
                             isLoading = isLoading,
                             buttonColor = colorResource(id = type.buttonColor),
-                            textColor = colorResource(id = type.textColor),
+                            textColor = colorResource(id = type.textButtonColor),
                             onClick = { onButtonClick(text) }
                         )
                     }

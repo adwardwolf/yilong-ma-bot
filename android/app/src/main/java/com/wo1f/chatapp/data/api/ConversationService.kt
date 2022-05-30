@@ -24,16 +24,16 @@ interface ConversationService {
     ): Response<BaseResponse<Unit>>
 
     @PATCH("conversation/{id}")
-    suspend fun updateConversation(
+    suspend fun update(
         @Path("id") id: String,
         @Body body: ConversationRq
     ): Response<BaseResponse<Unit>>
 
     @DELETE("conversation/{id}")
-    suspend fun deleteConversation(@Path("id") id: String): Response<BaseResponse<Unit>>
+    suspend fun delete(@Path("id") id: String): Response<BaseResponse<Unit>>
 
     @GET("{name}/conversation")
-    suspend fun getConversations(
+    suspend fun getAll(
         @Path("name") name: String
     ): Response<BaseResponse<GetConversationRes>>
 }

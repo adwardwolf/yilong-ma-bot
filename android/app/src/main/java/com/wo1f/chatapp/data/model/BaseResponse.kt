@@ -15,9 +15,15 @@ data class BaseResponse<T>(
     val msgCode: Int,
 )
 
+/**
+ * Contains all message code that might return from service
+ */
 object MsgCode {
     private const val CATEGORY_ALREADY_EXIST = 41
 
+    /**
+     * Return string id based on [msgCode]
+     */
     fun getMessageRes(msgCode: Int): Int? {
         return when (msgCode) {
             CATEGORY_ALREADY_EXIST -> R.string.msg_code_category_already_exists

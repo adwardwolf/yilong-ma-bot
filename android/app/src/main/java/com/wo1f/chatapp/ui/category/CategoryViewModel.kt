@@ -11,12 +11,12 @@ import com.wo1f.chatapp.data.DataResource
 import com.wo1f.chatapp.data.model.category.CategoryRes
 import com.wo1f.chatapp.data.model.category.CategoryRq
 import com.wo1f.chatapp.data.repo.CategoryRepo
-import com.wo1f.chatapp.ui.CategoryAction
 import com.wo1f.chatapp.ui.base.BaseViewModel
+import com.wo1f.chatapp.ui.model.CategoryAction
 import com.wo1f.chatapp.ui.model.OneTFDialogType
-import com.wo1f.chatapp.ui.model.State
-import com.wo1f.chatapp.ui.model.UiState
 import com.wo1f.chatapp.ui.state.DialogState
+import com.wo1f.chatapp.ui.state.State
+import com.wo1f.chatapp.ui.state.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -53,7 +53,7 @@ class CategoryViewModel @Inject constructor(
     private fun add(category: String) {
         viewModelScope.launch {
             repo.insert(CategoryRq(category)).collect { result ->
-                result.handleActionResult(CategoryAction.Add)
+                result.handleAction(CategoryAction.Add)
             }
         }
     }

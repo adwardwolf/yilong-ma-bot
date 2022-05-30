@@ -40,7 +40,6 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.wo1f.chatapp.R
 import com.wo1f.chatapp.data.model.conversation.ConversationRes
-import com.wo1f.chatapp.ui.ConverAction
 import com.wo1f.chatapp.ui.base.Content
 import com.wo1f.chatapp.ui.base.HandleErrorDialog
 import com.wo1f.chatapp.ui.base.HandleLifeCycle
@@ -49,8 +48,9 @@ import com.wo1f.chatapp.ui.base.HandleTwoActionDialog
 import com.wo1f.chatapp.ui.category.CATEGORY_ALL
 import com.wo1f.chatapp.ui.item.CategoryChip
 import com.wo1f.chatapp.ui.item.ConverItem
+import com.wo1f.chatapp.ui.model.ConverAction
 import com.wo1f.chatapp.ui.model.OneTFDialogType
-import com.wo1f.chatapp.ui.model.UiState
+import com.wo1f.chatapp.ui.state.UiState
 import com.wo1f.chatapp.ui.utils.AddFAB
 import com.wo1f.chatapp.ui.utils.BgImageScaffold
 import com.wo1f.chatapp.ui.utils.BoxMaxSizeCenter
@@ -58,7 +58,7 @@ import com.wo1f.chatapp.ui.utils.BoxMaxWidthEnd
 import com.wo1f.chatapp.ui.utils.CloseIcon
 import com.wo1f.chatapp.ui.utils.CustomButton
 import com.wo1f.chatapp.ui.utils.CustomOutlineTextField
-import com.wo1f.chatapp.ui.utils.CustomTopAppBarIconStartAndEnd
+import com.wo1f.chatapp.ui.utils.TopAppBarIconStartAndEnd
 import com.wo1f.chatapp.ui.utils.W400xh5Text
 import com.wo1f.chatapp.ui.utils.W500xh4Text
 import com.wo1f.chatapp.ui.utils.W600xh3Text
@@ -196,7 +196,7 @@ fun ConverScreen(goBack: () -> Unit) {
     HandleTwoActionDialog(
         dialogState = twoActionDialogState,
         hideDialog = viewModel::hideTwoActionDialog,
-        onActionClick = viewModel::onTwoDialogActionClick
+        onPosClick = viewModel::onTwoDialogActionClick
     )
 }
 
@@ -208,7 +208,7 @@ private fun ConverTopBar(
     onEditClick: () -> Unit,
     onDeleteClick: () -> Unit
 ) {
-    CustomTopAppBarIconStartAndEnd(
+    TopAppBarIconStartAndEnd(
         label = name,
         startContent = {
             IconButton(

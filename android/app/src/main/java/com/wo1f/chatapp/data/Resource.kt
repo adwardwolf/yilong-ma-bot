@@ -15,7 +15,7 @@ import kotlinx.coroutines.withContext
 import retrofit2.Response
 import java.net.SocketTimeoutException
 
-abstract class DataSourceResult<T> {
+abstract class DataResult<T> {
 
     suspend fun getResult(): Flow<DataResource<T>> {
         return flow {
@@ -44,13 +44,21 @@ abstract class DataSourceResult<T> {
 }
 
 sealed class DataResource<out T> {
+
     class Success<T>(val data: T? = null) : DataResource<T>()
+
+    /**
+     * @property msg A Generic error message
+     * @property dialogMsg A Specific error message that should show in the dialog
+     */
     class Error(
         val msg: ErrorMessage? = null,
-        val dialogMsg: Int ? = null
+        val dialogMsg: Int? = null
     ) : DataResource<Nothing>()
+
     object Loading : DataResource<Nothing>()
-    object Empty : DataResource<Nothing>()
+//
+//    object Empty : DataResource<Nothing>()
 
     inline fun onSuccess(block: (T?) -> Unit): DataResource<T> = apply {
         if (this is Success) {
@@ -71,6 +79,9 @@ sealed class DataResource<out T> {
     }
 }
 
+/**
+ * Generics error message
+ */
 enum class ErrorMessage(val value: Int) {
     SOCKET_TIMEOUT(R.string.error_socket_time_out),
     UNKNOWN(R.string.error_unknown),
@@ -79,7 +90,10 @@ enum class ErrorMessage(val value: Int) {
     NOT_FOUND(R.string.error_not_found)
 }
 
-fun <T> Response<BaseResponse<T>>.getResult(): DataResource<T> {
+/**
+ * Returns [DataResource] based on [Response.code]
+ */
+private fun <T> Response<BaseResponse<T>>.getResult(): DataResource<T> {
     return if (this.isSuccessful) {
         val body = this.body()
         if (body != null) {

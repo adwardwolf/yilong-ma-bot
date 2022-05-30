@@ -3,7 +3,7 @@
  * @created May 27, 2022
  */
 
-package com.wo1f.chatapp.ui
+package com.wo1f.chatapp.ui.model
 
 sealed interface Action
 
@@ -25,9 +25,4 @@ sealed class ConverAction : Action {
     object DeleteCategory : ConverAction()
 }
 
-sealed class ChatAction : Action {
-
-    object Update : ChatAction()
-
-    object Delete : ChatAction()
-}
+sealed class ChatAction : Action

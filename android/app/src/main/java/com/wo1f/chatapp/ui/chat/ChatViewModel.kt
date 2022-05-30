@@ -7,12 +7,12 @@ package com.wo1f.chatapp.ui.chat
 
 import androidx.lifecycle.SavedStateHandle
 import com.wo1f.chatapp.data.DataResource
-import com.wo1f.chatapp.data.model.ChatRes
+import com.wo1f.chatapp.data.model.chat.ChatRes
 import com.wo1f.chatapp.data.repo.ChatRepo
-import com.wo1f.chatapp.ui.ChatAction
 import com.wo1f.chatapp.ui.base.BaseViewModel
-import com.wo1f.chatapp.ui.model.State
-import com.wo1f.chatapp.ui.model.UiState
+import com.wo1f.chatapp.ui.model.ChatAction
+import com.wo1f.chatapp.ui.state.State
+import com.wo1f.chatapp.ui.state.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

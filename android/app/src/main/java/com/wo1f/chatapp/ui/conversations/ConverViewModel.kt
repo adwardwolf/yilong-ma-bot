@@ -16,13 +16,13 @@ import com.wo1f.chatapp.data.model.conversation.ConversationRq
 import com.wo1f.chatapp.data.model.conversation.GetConversationRes
 import com.wo1f.chatapp.data.repo.CategoryRepo
 import com.wo1f.chatapp.data.repo.ConversationRepo
-import com.wo1f.chatapp.ui.ConverAction
 import com.wo1f.chatapp.ui.base.BaseViewModel
+import com.wo1f.chatapp.ui.model.ConverAction
 import com.wo1f.chatapp.ui.model.OneTFDialogType
-import com.wo1f.chatapp.ui.model.State
 import com.wo1f.chatapp.ui.model.TwoActionDialogType
-import com.wo1f.chatapp.ui.model.UiState
 import com.wo1f.chatapp.ui.state.DialogState
+import com.wo1f.chatapp.ui.state.State
+import com.wo1f.chatapp.ui.state.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -64,7 +64,7 @@ class ConverViewModel @Inject constructor(
     val listState = _listState
 
     override suspend fun repoCall(): Flow<DataResource<GetConversationRes>> {
-        return converRepo.getConversations(_name.value)
+        return converRepo.getAll(_name.value)
     }
 
     override suspend fun onLoadSuccess(data: GetConversationRes) {
@@ -80,8 +80,8 @@ class ConverViewModel @Inject constructor(
     internal fun add(question: String, answer: String) {
         val request = ConversationRq(question, answer, _name.value)
         viewModelScope.launch {
-            converRepo.addConversation(request).collect { result ->
-                result.handleActionResult(ConverAction.Add)
+            converRepo.add(request).collect { result ->
+                result.handleAction(ConverAction.Add)
             }
         }
     }
@@ -90,8 +90,8 @@ class ConverViewModel @Inject constructor(
         val request = ConversationRq(question, answer, _name.value)
         viewModelScope.launch {
             _clickedItem.value?.id?.let { id ->
-                converRepo.updateConversation(id, request).collect { result ->
-                    result.handleActionResult(ConverAction.Update)
+                converRepo.update(id, request).collect { result ->
+                    result.handleAction(ConverAction.Update)
                 }
             }
         }
@@ -100,8 +100,8 @@ class ConverViewModel @Inject constructor(
     private fun delete() {
         _clickedItem.value?.id?.let { id ->
             viewModelScope.launch {
-                converRepo.deleteConversation(id).collect { result ->
-                    result.handleActionResult(ConverAction.Delete)
+                converRepo.delete(id).collect { result ->
+                    result.handleAction(ConverAction.Delete)
                 }
             }
         }
@@ -110,7 +110,7 @@ class ConverViewModel @Inject constructor(
     private fun updateCategory(newName: String) {
         viewModelScope.launch {
             categoryRepo.update(_name.value, CategoryRq(newName)).collect { result ->
-                result.handleActionResult(
+                result.handleAction(
                     type = ConverAction.UpdateCategory,
                     onSuccess = { _name.value = newName }
                 )
@@ -121,7 +121,7 @@ class ConverViewModel @Inject constructor(
     private fun deleteCategory() {
         viewModelScope.launch {
             categoryRepo.delete(_name.value).collect { result ->
-                result.handleActionResult(ConverAction.DeleteCategory)
+                result.handleAction(ConverAction.DeleteCategory)
             }
         }
     }

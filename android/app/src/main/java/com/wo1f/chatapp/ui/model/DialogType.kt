@@ -6,28 +6,40 @@
 package com.wo1f.chatapp.ui.model
 
 import com.wo1f.chatapp.R
+import com.wo1f.chatapp.ui.utils.OneTextFieldDialog
+import com.wo1f.chatapp.ui.utils.TwoActionDialog
 
+sealed interface Dialog
+
+/**
+ * A class that contains necessary data for [TwoActionDialog]
+ * @property message Dialog's message
+ * @property posText positive action's text
+ */
 sealed class TwoActionDialogType(
     val message: Int,
-    val actionText: Int
-) {
+    val posText: Int
+) : Dialog {
     object Delete : TwoActionDialogType(R.string.delete_item_message, R.string.delete)
 }
 
+/**
+ * A class that contains necessary data for [OneTextFieldDialog]
+ */
 sealed class OneTFDialogType(
     val title: Int,
     val message: Any? = null,
     val textButton: Int,
     val buttonColor: Int,
-    val textColor: Int,
+    val textButtonColor: Int,
     val hint: Int
-) {
+) : Dialog {
     class DeleteCategory(val name: String) : OneTFDialogType(
         title = R.string.delete_category,
         message = "Write \"$name\" to delete category.",
         textButton = R.string.delete,
         buttonColor = R.color.red_candy,
-        textColor = R.color.white,
+        textButtonColor = R.color.white,
         hint = R.string.category_name
     )
 
@@ -36,7 +48,7 @@ sealed class OneTFDialogType(
         message = null,
         textButton = R.string.add,
         buttonColor = R.color.light_yellow_green,
-        textColor = R.color.dark_blue,
+        textButtonColor = R.color.dark_blue,
         hint = R.string.category_name
     )
 
@@ -45,7 +57,7 @@ sealed class OneTFDialogType(
         message = null,
         textButton = R.string.update,
         buttonColor = R.color.light_yellow_green,
-        textColor = R.color.dark_blue,
+        textButtonColor = R.color.dark_blue,
         hint = R.string.category_name
     )
 }

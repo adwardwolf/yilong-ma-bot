@@ -26,6 +26,7 @@
     <string name="please_wait">Please Wait...</string>
     <string name="no_conversation">No conversation</string>
     <string name="search">Search</string>
+    <string name="ok">"OK"</string>
 
     <!-- Error message -->
     <string name="error_socket_time_out">Socket timeout error</string>

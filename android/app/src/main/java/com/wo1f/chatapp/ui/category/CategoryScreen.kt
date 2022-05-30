@@ -47,11 +47,11 @@ import com.wo1f.chatapp.ui.base.HandleLifeCycle
 import com.wo1f.chatapp.ui.base.HandleOneTFDialog
 import com.wo1f.chatapp.ui.item.CategoryItem
 import com.wo1f.chatapp.ui.model.OneTFDialogType
-import com.wo1f.chatapp.ui.model.UiState
+import com.wo1f.chatapp.ui.state.UiState
 import com.wo1f.chatapp.ui.utils.AddFAB
 import com.wo1f.chatapp.ui.utils.BgImageScaffold
 import com.wo1f.chatapp.ui.utils.CloseIcon
-import com.wo1f.chatapp.ui.utils.CustomTopAppBarIconStart
+import com.wo1f.chatapp.ui.utils.TopAppBarIconStart
 
 internal const val CATEGORY_ALL = "all"
 
@@ -125,7 +125,7 @@ fun CategoryScreen(
 
 @Composable
 private fun CategoryTopBar(goBack: () -> Unit) {
-    CustomTopAppBarIconStart(
+    TopAppBarIconStart(
         imageVector = Icons.Default.ArrowBack,
         onClick = goBack,
         label = stringResource(id = R.string.categories)
@@ -175,7 +175,7 @@ private fun CategoryContent(
 }
 
 @Composable
-fun SearchBar(
+private fun SearchBar(
     modifier: Modifier,
     value: String,
     onValueChange: (String) -> Unit,

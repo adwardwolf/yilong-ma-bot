@@ -28,15 +28,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.wo1f.chatapp.R
-import com.wo1f.chatapp.data.model.ChatRes
-import com.wo1f.chatapp.data.model.toChat
+import com.wo1f.chatapp.data.model.chat.ChatRes
+import com.wo1f.chatapp.data.model.chat.toChat
 import com.wo1f.chatapp.ui.base.Content
 import com.wo1f.chatapp.ui.base.HandleLifeCycle
 import com.wo1f.chatapp.ui.item.ChatItem
-import com.wo1f.chatapp.ui.model.UiState
+import com.wo1f.chatapp.ui.state.UiState
 import com.wo1f.chatapp.ui.utils.BgImageScaffold
 import com.wo1f.chatapp.ui.utils.ChatBottomBar
-import com.wo1f.chatapp.ui.utils.CustomTopAppBarIconStart
+import com.wo1f.chatapp.ui.utils.TopAppBarIconStart
 import com.wo1f.chatapp.ui.utils.keyboardAsState
 import com.wo1f.chatapp.utils.SocketIO
 import kotlinx.coroutines.delay
@@ -111,7 +111,7 @@ fun ChatScreen(goBack: () -> Unit) {
 
 @Composable
 private fun ChatTopBar(goBack: () -> Unit) {
-    CustomTopAppBarIconStart(
+    TopAppBarIconStart(
         imageVector = Icons.Default.ArrowBack,
         onClick = goBack,
         label = stringResource(id = R.string.chat)

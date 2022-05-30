@@ -24,9 +24,12 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 import com.wo1f.chatapp.ui.utils.W600xh3Text
 
+/**
+ * An item which has a text and an leading image
+ */
 @Composable
 fun BasicListItem(
-    name: String,
+    text: String,
     painter: Painter,
     onClick: () -> Unit,
 ) {
@@ -56,7 +59,7 @@ fun BasicListItem(
                     )
                 }
             }
-            W600xh3Text(text = "@$name", maxLines = 1)
+            W600xh3Text(text = "@$text", maxLines = 1)
         }
     }
 }

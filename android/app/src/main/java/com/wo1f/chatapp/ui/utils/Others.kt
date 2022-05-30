@@ -34,6 +34,9 @@ fun CircleLoadingPI(
     )
 }
 
+/**
+ * A Scaffold with custom background image
+ */
 @Composable
 fun BgImageScaffold(
     modifier: Modifier = Modifier,

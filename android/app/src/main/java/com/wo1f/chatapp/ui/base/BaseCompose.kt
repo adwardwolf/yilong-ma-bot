@@ -15,9 +15,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.wo1f.chatapp.ui.model.OneTFDialogType
 import com.wo1f.chatapp.ui.model.TwoActionDialogType
-import com.wo1f.chatapp.ui.model.UiState
 import com.wo1f.chatapp.ui.state.DialogState
 import com.wo1f.chatapp.ui.state.ErrorDialogState
+import com.wo1f.chatapp.ui.state.State
+import com.wo1f.chatapp.ui.state.UiState
 import com.wo1f.chatapp.ui.utils.BoxMaxSizeCenter
 import com.wo1f.chatapp.ui.utils.CircleLoadingPI
 import com.wo1f.chatapp.ui.utils.OkDialog
@@ -25,8 +26,11 @@ import com.wo1f.chatapp.ui.utils.OneTextFieldDialog
 import com.wo1f.chatapp.ui.utils.TwoActionDialog
 import com.wo1f.chatapp.ui.utils.W600xh3Text
 
+/**
+ * A generic function that handle success, loading, error state of [baseState]
+ */
 @Composable
-fun <T> Content(
+fun <T : State> Content(
     baseState: UiState<T>,
     onSuccess: @Composable (T?) -> Unit
 ) {
@@ -45,6 +49,9 @@ fun <T> Content(
     }
 }
 
+/**
+ * A function that handles [OkDialog] based on [dialogState]
+ */
 @Composable
 fun HandleErrorDialog(dialogState: ErrorDialogState, hideDialog: () -> Unit) {
     if (dialogState.show) {
@@ -57,24 +64,30 @@ fun HandleErrorDialog(dialogState: ErrorDialogState, hideDialog: () -> Unit) {
     }
 }
 
+/**
+ * A function that handles [TwoActionDialog] based on [dialogState]
+ */
 @Composable
 fun HandleTwoActionDialog(
     dialogState: DialogState<TwoActionDialogType>,
-    onActionClick: () -> Unit,
+    onPosClick: () -> Unit,
     hideDialog: () -> Unit
 ) {
     if (dialogState.show && dialogState.type != null) {
         val message = dialogState.type.message
-        val actionText = dialogState.type.actionText
+        val actionText = dialogState.type.posText
         TwoActionDialog(
             text = stringResource(id = message),
             actionText = stringResource(id = actionText),
             onCancelClick = hideDialog,
-            onActionClick = onActionClick
+            onPosClick = onPosClick
         )
     }
 }
 
+/**
+ * A function that handles [OneTextFieldDialog] based on [dialogState]
+ */
 @Composable
 fun HandleOneTFDialog(
     text: String,

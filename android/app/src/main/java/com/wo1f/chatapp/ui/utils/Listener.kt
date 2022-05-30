@@ -13,14 +13,20 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalView
+import com.wo1f.chatapp.ui.utils.Keyboard.Closed
+import com.wo1f.chatapp.ui.utils.Keyboard.Opened
 
 enum class Keyboard {
     Opened, Closed
 }
 
+/**
+ * A function that observes and returns the keyboard state:
+ * [Opened] or [Closed]
+ */
 @Composable
 fun keyboardAsState(): State<Keyboard> {
-    val keyboardState = remember { mutableStateOf(Keyboard.Closed) }
+    val keyboardState = remember { mutableStateOf(Closed) }
     val view = LocalView.current
     DisposableEffect(view) {
         val onGlobalListener = ViewTreeObserver.OnGlobalLayoutListener {
@@ -29,9 +35,9 @@ fun keyboardAsState(): State<Keyboard> {
             val screenHeight = view.rootView.height
             val keypadHeight = screenHeight - rect.bottom
             keyboardState.value = if (keypadHeight > screenHeight * 0.15) {
-                Keyboard.Opened
+                Opened
             } else {
-                Keyboard.Closed
+                Closed
             }
         }
         view.viewTreeObserver.addOnGlobalLayoutListener(onGlobalListener)

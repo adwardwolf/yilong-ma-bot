@@ -1,38 +1,16 @@
 /**
  * @author Adwardwo1f
- * @created May 27, 2022
+ * @created May 30, 2022
  */
 
-package com.wo1f.chatapp.data.model
+package com.wo1f.chatapp.data.model.chat
 
 import com.google.gson.annotations.SerializedName
 import java.time.LocalDateTime
 
-data class Chat(
-    val id: String,
-    val name: String,
-    val text: String?,
-    val type: Type,
-    val date: String
-) {
-
-    enum class Type {
-        SENDER,
-        RECEIVER
-    }
-}
-
-data class JoinChat(
-    val userName: String,
-    val roomName: String
-)
-
-data class ChatRq(
-    val userName: String,
-    val roomName: String,
-    val text: String,
-)
-
+/**
+ * Data class represents chat response
+ */
 data class ChatRes(
     @SerializedName("_id")
     val id: String,
@@ -46,6 +24,10 @@ data class ChatRes(
     val date: String? = null,
 )
 
+/**
+ * Map chat response to chat domain
+ * @param name Name of current user
+ */
 fun ChatRes.toChat(name: String): Chat {
     return Chat(
         id = this.id,

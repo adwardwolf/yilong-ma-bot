@@ -12,6 +12,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
+/**
+ * Box that align the [content] to center
+ */
 @Composable
 fun BoxMaxSizeCenter(content: @Composable () -> Unit) {
     Box(
@@ -22,6 +25,9 @@ fun BoxMaxSizeCenter(content: @Composable () -> Unit) {
     }
 }
 
+/**
+ * Box that align the [content] to start
+ */
 @Composable
 fun BoxMaxWidthEnd(content: @Composable () -> Unit) {
     Box(

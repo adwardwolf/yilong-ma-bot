@@ -23,7 +23,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun CustomTopAppBarIconStart(
+fun TopAppBarIconStart(
     imageVector: ImageVector,
     onClick: () -> Unit,
     label: String,
@@ -60,67 +60,7 @@ fun CustomTopAppBarIconStart(
 }
 
 @Composable
-fun CustomTopAppBarIconStartAndEnd(
-    label: String,
-    imageVectorStart: ImageVector,
-    imageVectorEnd: ImageVector?,
-    iconEndEnabled: Boolean = true,
-    iconDescriptionStart: String? = null,
-    iconDescriptionEnd: String? = null,
-    onClickIconStart: () -> Unit,
-    onClickIconEnd: () -> Unit,
-) {
-    TopAppBar(
-        backgroundColor = MaterialTheme.colors.background,
-        contentColor = MaterialTheme.colors.onBackground,
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(start = 12.dp, end = 12.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Row(
-                modifier = Modifier.wrapContentSize(Alignment.TopStart),
-                horizontalArrangement = Arrangement.spacedBy(32.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                IconButton(
-                    modifier = Modifier.size(24.dp),
-                    onClick = onClickIconStart,
-                ) {
-                    Icon(
-                        modifier = Modifier.fillMaxSize(),
-                        imageVector = imageVectorStart,
-                        contentDescription = iconDescriptionStart
-                    )
-                }
-                W600xh3Text(
-                    text = label,
-                    maxLines = 1,
-                    color = MaterialTheme.colors.onSurface
-                )
-            }
-            imageVectorEnd?.let { imageVectorEnd ->
-                IconButton(
-                    modifier = Modifier.size(24.dp),
-                    onClick = onClickIconEnd,
-                    enabled = iconEndEnabled,
-                ) {
-                    Icon(
-                        modifier = Modifier.fillMaxSize(),
-                        imageVector = imageVectorEnd,
-                        contentDescription = iconDescriptionEnd
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun CustomTopAppBarIconStartAndEnd(
+fun TopAppBarIconStartAndEnd(
     label: String,
     startContent: @Composable () -> Unit,
     endContent: @Composable () -> Unit

@@ -60,7 +60,12 @@ fun ChatBottomBar(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
-                .padding(start = 16.dp, top = 8.dp, bottom = 8.dp, end = 8.dp),
+                .padding(
+                    start = 16.dp,
+                    top = 8.dp,
+                    bottom = 8.dp,
+                    end = 8.dp
+                ),
         ) {
             Row(
                 modifier = Modifier

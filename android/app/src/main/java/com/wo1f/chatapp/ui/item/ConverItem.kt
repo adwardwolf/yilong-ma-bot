@@ -106,9 +106,7 @@ fun ConverItem(
 private val robotEmoji = getEmoji(0x1F916)
 private val humanEmoji = getEmoji(0x1F914)
 
-private fun getEmoji(unicode: Int): String {
-    return String(Character.toChars(unicode))
-}
+private fun getEmoji(unicode: Int) = String(Character.toChars(unicode))
 
 @Composable
 fun CategoryChip(

@@ -7,6 +7,10 @@ package com.wo1f.chatapp.data.model.category
 
 import com.google.gson.annotations.SerializedName
 
+/**
+ * Represents a category response from service
+ * @property [count] number of all conversations in this category
+ */
 data class CategoryRes(
     @SerializedName("id")
     val id: String,

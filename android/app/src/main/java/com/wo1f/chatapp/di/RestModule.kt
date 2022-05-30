@@ -17,10 +17,13 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object RestModule {
+
+    @Singleton
     @Provides
     fun provideRetrofit(): Retrofit {
         val gson: Gson = GsonBuilder()
@@ -32,16 +35,19 @@ object RestModule {
             .build()
     }
 
+    @Singleton
     @Provides
     fun provideConversationService(retrofit: Retrofit): ConversationService {
         return retrofit.create(ConversationService::class.java)
     }
 
+    @Singleton
     @Provides
     fun provideCategoryService(retrofit: Retrofit): CategoryService {
         return retrofit.create(CategoryService::class.java)
     }
 
+    @Singleton
     @Provides
     fun provideChatService(retrofit: Retrofit): ChatService {
         return retrofit.create(ChatService::class.java)

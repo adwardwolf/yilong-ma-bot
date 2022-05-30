@@ -7,6 +7,9 @@ package com.wo1f.chatapp.data.model.conversation
 
 import com.google.gson.annotations.SerializedName
 
+/**
+ * Data class represents conversation response
+ */
 data class ConversationRes(
     @SerializedName("id")
     val id: String,

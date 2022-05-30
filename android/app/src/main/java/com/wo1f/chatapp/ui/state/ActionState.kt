@@ -3,9 +3,9 @@
  * @created May 27, 2022
  */
 
-package com.wo1f.chatapp.ui.model
+package com.wo1f.chatapp.ui.state
 
-import com.wo1f.chatapp.ui.Action
+import com.wo1f.chatapp.ui.model.Action
 
 data class ActionState<T : Action>(
     var type: T? = null,

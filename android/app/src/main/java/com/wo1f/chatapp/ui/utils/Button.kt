@@ -32,7 +32,7 @@ fun CustomButton(
 ) {
     Button(
         modifier = modifier
-            .fillComponentsWidth()
+            .fillButtonWidth()
             .height(50.dp),
         enabled = enabled,
         onClick = onClick,
@@ -57,6 +57,9 @@ fun CustomButton(
     }
 }
 
+/**
+ * A [FloatingActionButton] with an add icon
+ */
 @Composable
 fun AddFAB(onClick: () -> Unit) {
     FloatingActionButton(

@@ -15,6 +15,9 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
+/**
+ * A close icon with round background shape
+ */
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun CloseIcon(

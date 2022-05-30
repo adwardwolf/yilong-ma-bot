@@ -6,7 +6,7 @@
 package com.wo1f.chatapp.data.repo
 
 import com.wo1f.chatapp.data.DataResource
-import com.wo1f.chatapp.data.DataSourceResult
+import com.wo1f.chatapp.data.DataResult
 import com.wo1f.chatapp.data.api.ConversationService
 import com.wo1f.chatapp.data.model.BaseResponse
 import com.wo1f.chatapp.data.model.conversation.ConversationRq
@@ -19,34 +19,37 @@ import javax.inject.Singleton
 @Singleton
 class ConversationRepo @Inject constructor(private val service: ConversationService) {
 
-    suspend fun addConversation(body: ConversationRq): Flow<DataResource<*>> {
-        return object : DataSourceResult<Unit>() {
+    suspend fun add(body: ConversationRq): Flow<DataResource<*>> {
+        return object : DataResult<Unit>() {
             override suspend fun apiCall(): Response<BaseResponse<Unit>> {
                 return service.addConversation(body)
             }
         }.getResult()
     }
 
-    suspend fun getConversations(name: String): Flow<DataResource<GetConversationRes>> {
-        return object : DataSourceResult<GetConversationRes>() {
+    /**
+     * Get conversations by category name
+     */
+    suspend fun getAll(name: String): Flow<DataResource<GetConversationRes>> {
+        return object : DataResult<GetConversationRes>() {
             override suspend fun apiCall(): Response<BaseResponse<GetConversationRes>> {
-                return service.getConversations(name)
+                return service.getAll(name)
             }
         }.getResult()
     }
 
-    suspend fun updateConversation(id: String, body: ConversationRq): Flow<DataResource<*>> {
-        return object : DataSourceResult<Unit>() {
+    suspend fun update(id: String, body: ConversationRq): Flow<DataResource<*>> {
+        return object : DataResult<Unit>() {
             override suspend fun apiCall(): Response<BaseResponse<Unit>> {
-                return service.updateConversation(id, body)
+                return service.update(id, body)
             }
         }.getResult()
     }
 
-    suspend fun deleteConversation(id: String): Flow<DataResource<*>> {
-        return object : DataSourceResult<Unit>() {
+    suspend fun delete(id: String): Flow<DataResource<*>> {
+        return object : DataResult<Unit>() {
             override suspend fun apiCall(): Response<BaseResponse<Unit>> {
-                return service.deleteConversation(id)
+                return service.delete(id)
             }
         }.getResult()
     }

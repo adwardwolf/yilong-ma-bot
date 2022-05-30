@@ -8,6 +8,9 @@ package com.wo1f.chatapp.data.model
 import com.google.gson.annotations.SerializedName
 import com.wo1f.chatapp.R
 
+/**
+ * @property msgCode A domain message code
+ */
 data class BaseResponse<T>(
     @SerializedName("data")
     val data: T?,

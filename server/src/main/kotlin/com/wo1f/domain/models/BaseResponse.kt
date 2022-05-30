@@ -15,6 +15,9 @@ data class BaseResponse<T>(
     val msgCode: Int = 0,
 )
 
+/**
+ * Contains all message codes that front-end can understand
+ */
 object MsgCode {
     const val CATEGORY_ALREADY_EXIST = 41
 }

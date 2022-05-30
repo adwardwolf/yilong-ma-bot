@@ -13,6 +13,9 @@ import org.litote.kmongo.eq
 
 class ChatCollection(private val dispatcher: CoroutineDispatcher) {
 
+    /**
+     * Get all chats from database
+     */
     suspend fun getAll(roomName: String): List<ChatRes> = withContext(dispatcher) {
         chatsColl.find(ChatRes::roomName eq roomName).toList()
     }

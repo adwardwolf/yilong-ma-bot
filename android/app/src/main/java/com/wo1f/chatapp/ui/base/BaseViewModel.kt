@@ -20,17 +20,31 @@ import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
 
 /**
- * [S] a main state of the ui
- * [A] actions of the ui
- * [Data] main data of the ui
+ * [S] a main state of the UI
+ * [A] actions of the UI
+ * [Data] main data of the UI
  */
 abstract class BaseViewModel<S : State, A : Action, Data> : ViewModel() {
 
     private val _baseState = MutableStateFlow(UiState<S>())
+
+    /**
+     * Main state of the UI
+     */
     val baseState = _baseState.asStateFlow()
+
     private val _actionState = MutableStateFlow(ActionState<A>())
+
+    /**
+     * This single variable hold all action states that the viewModel has
+     */
     val actionState = _actionState.asStateFlow()
+
     private val _errorDialogState = MutableStateFlow(ErrorDialogState())
+
+    /**
+     * This single variable hold all errors states that occurred
+     */
     val errorDialogState = _errorDialogState.asStateFlow()
 
     internal abstract suspend fun repoCall(): Flow<DataResource<Data>>
@@ -60,7 +74,7 @@ abstract class BaseViewModel<S : State, A : Action, Data> : ViewModel() {
 
     /**
      * Load main data by calling [repoCall] and update [baseState] based on the result,
-     * loading state will be ignore
+     * loading state will be ignored
      */
     internal open fun refresh() {
         viewModelScope.launch {

@@ -45,4 +45,8 @@ class AuthorizationException : RuntimeException()
 
 class DatabaseException(override val message: String) : RuntimeException(message)
 
+/**
+ * An exception will be thrown by domain-specific errors
+ * @property msgCode A meaningful message code that front end can understand
+ */
 class ReturnException(val msgCode: Int) : RuntimeException()

@@ -28,6 +28,9 @@ import org.litote.kmongo.updateOne
 
 class CategoryCollection(private val dispatcher: CoroutineDispatcher) {
 
+    /**
+     * Get all category in the database
+     */
     suspend fun getAll(): List<CategoryRes> = withContext(dispatcher) {
         val categories = categoriesColl
             .find(CategoryDb::name ne "all")
@@ -46,11 +49,17 @@ class CategoryCollection(private val dispatcher: CoroutineDispatcher) {
         list
     }
 
+    /**
+     * Get one category by name
+     */
     suspend fun getByName(name: String): CategoryRes = withContext(dispatcher) {
         categoriesColl.findOne(CategoryDb::name eq name)
             ?: throw DatabaseException("getByName failed")
     }
 
+    /**
+     * Insert one category to database
+     */
     suspend fun insertOne(categoryRq: CategoryRq) = withContext(dispatcher) {
         try {
             val result = categoriesDbColl.insertOne(categoryRq.toDbObject())
@@ -66,6 +75,9 @@ class CategoryCollection(private val dispatcher: CoroutineDispatcher) {
         }
     }
 
+    /**
+     * Update one category by name
+     */
     suspend fun updateOne(name: String, categoryRq: CategoryRq) = withContext(dispatcher) {
         val result = categoriesDbColl.updateOne(
             filter = CategoryDb::name eq name,
@@ -76,12 +88,20 @@ class CategoryCollection(private val dispatcher: CoroutineDispatcher) {
         }
     }
 
+    /**
+     * Delete one category by name
+     */
     suspend fun deleteOne(name: String): CategoryRes = withContext(dispatcher) {
         val result = categoriesColl.findOneAndDelete(CategoryDb::name eq name)
             ?: throw DatabaseException("deleteOne failed")
         result
     }
 
+    /**
+     * Increase [CategoryDb.count] by [number]
+     * @param name Name of the category
+     * @param number Number of count to increase
+     */
     suspend fun increaseCount(name: String, number: Long) = withContext(dispatcher) {
         val result = categoriesDbColl.updateMany(
             CategoryDb::name `in` listOf(name, "all"),
@@ -92,6 +112,11 @@ class CategoryCollection(private val dispatcher: CoroutineDispatcher) {
         }
     }
 
+    /**
+     * Decrease [CategoryDb.count] by [number]
+     * @param name Name of the category
+     * @param number Number of count to decrease
+     */
     suspend fun decreaseCount(name: String, number: Long) = withContext(dispatcher) {
         val result = categoriesDbColl.updateMany(
             CategoryDb::name `in` listOf(name, "all"),

@@ -32,7 +32,7 @@ fun Application.registerCategoryRoutes() {
     val deleteCategory by inject<DeleteCategory>()
 
     routing {
-        conversationRoutes(
+        categoriesRoutes(
             insertCategory,
             getCategories,
             updateCategory,
@@ -41,7 +41,7 @@ fun Application.registerCategoryRoutes() {
     }
 }
 
-fun Route.conversationRoutes(
+fun Route.categoriesRoutes(
     insertCategory: InsertCategory,
     getCategories: GetCategories,
     updateCategory: UpdateCategory,

@@ -12,6 +12,9 @@ import org.bson.types.ObjectId
 import java.time.Instant
 import java.util.Date
 
+/**
+ * Data class represents conversation response
+ */
 @Serializable
 data class ConversationRes(
     @BsonId
@@ -23,6 +26,9 @@ data class ConversationRes(
     val createdAt: String
 )
 
+/**
+ * Data class represents conversation in database
+ */
 @Serializable
 data class ConversationDb(
     @Contextual
@@ -36,6 +42,9 @@ data class ConversationDb(
     val createdAt: Date
 )
 
+/**
+ * Data class represents conversation request
+ */
 @Serializable
 data class ConversationRq(
     var question: String,

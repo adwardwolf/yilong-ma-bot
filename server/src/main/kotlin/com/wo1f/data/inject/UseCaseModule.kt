@@ -27,6 +27,9 @@ import com.wo1f.domain.usecases.conversation.UpdateConversation
 import com.wo1f.domain.usecases.conversation.UpdateConversationImpl
 import org.koin.dsl.module
 
+/**
+ * Koin module of all use cases in [com.wo1f.domain.usecases]
+ */
 val useCasesModule = module {
     factory<InsertConversation> { InsertConversationImpl(get()) }
     factory<UpdateConversation> { UpdateConversationImpl(get()) }

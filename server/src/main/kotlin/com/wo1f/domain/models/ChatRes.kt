@@ -9,6 +9,9 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.bson.codecs.pojo.annotations.BsonId
 
+/**
+ * Data class represents chat response
+ */
 @Serializable
 data class ChatRes(
     @BsonId

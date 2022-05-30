@@ -23,6 +23,9 @@ import org.litote.kmongo.updateOne
 
 class ConversationCollection(private val dispatcher: CoroutineDispatcher) {
 
+    /**
+     * Insert one conversation to database
+     */
     suspend fun insertOne(conversationRq: ConversationRq) {
         return withContext(dispatcher) {
             val result = conversationsDbColl.insertOne(conversationRq.toDbObject())
@@ -32,6 +35,9 @@ class ConversationCollection(private val dispatcher: CoroutineDispatcher) {
         }
     }
 
+    /**
+     * Update one conversation by id
+     */
     suspend fun updateOne(id: String, conversationRq: ConversationRq) {
         return withContext(dispatcher) {
             val result = conversationsDbColl.updateOne(
@@ -48,6 +54,9 @@ class ConversationCollection(private val dispatcher: CoroutineDispatcher) {
         }
     }
 
+    /**
+     * Update all conversations in the old category to new category
+     */
     suspend fun updateToNewCategory(old: String, new: String) = withContext(dispatcher) {
         val result = conversationsDbColl.updateMany(
             filter = ConversationDb::category eq old,
@@ -58,11 +67,18 @@ class ConversationCollection(private val dispatcher: CoroutineDispatcher) {
         }
     }
 
+    /**
+     * Delete one conversation by id
+     */
     suspend fun deleteOne(id: String): ConversationRes = withContext(dispatcher) {
         conversationsColl.findOneAndDelete(ConversationDb::id eq ObjectId(id))
             ?: throw DatabaseException("deleteOne failed")
     }
 
+    /**
+     * Delete all conversations in [category]
+     * @param category Name of category
+     */
     suspend fun deleteByCategory(category: String) = withContext(dispatcher) {
         val result = conversationsColl.deleteMany(ConversationDb::category eq category)
         if (!result.wasAcknowledged()) {
@@ -70,6 +86,9 @@ class ConversationCollection(private val dispatcher: CoroutineDispatcher) {
         }
     }
 
+    /**
+     * Get all conversations from database
+     */
     suspend fun getAll(): List<ConversationRes> {
         return withContext(dispatcher) {
             conversationsColl
@@ -79,6 +98,10 @@ class ConversationCollection(private val dispatcher: CoroutineDispatcher) {
         }
     }
 
+    /**
+     * Get all conversations in the category
+     * @param name Name of category
+     */
     suspend fun getByCategory(name: String): List<ConversationRes> {
         return withContext(dispatcher) {
             conversationsColl

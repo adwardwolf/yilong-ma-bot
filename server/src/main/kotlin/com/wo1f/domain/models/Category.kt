@@ -12,6 +12,9 @@ import org.bson.types.ObjectId
 import java.time.Instant
 import java.util.Date
 
+/**
+ * Data class represents category response
+ */
 @Serializable
 data class CategoryRes(
     @BsonId
@@ -21,6 +24,9 @@ data class CategoryRes(
     val count: Long
 )
 
+/**
+ * Data class represents category in database
+ */
 @Serializable
 data class CategoryDb(
     @BsonId
@@ -32,6 +38,9 @@ data class CategoryDb(
     val count: Long
 )
 
+/**
+ * Data class represents category request
+ */
 @Serializable
 data class CategoryRq(
     var name: String

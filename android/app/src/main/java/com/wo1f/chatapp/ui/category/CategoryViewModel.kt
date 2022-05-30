@@ -35,6 +35,8 @@ class CategoryViewModel @Inject constructor(
     val oneTFDialogState = _oneTFDialogState.asStateFlow()
     private val _listState = MutableStateFlow(LazyListState())
     val listState = _listState
+    private val _search = MutableStateFlow("")
+    val search = _search.asStateFlow()
 
     override suspend fun repoCall(): Flow<DataResource<List<CategoryRes>>> {
         return repo.getAll()
@@ -76,6 +78,14 @@ class CategoryViewModel @Inject constructor(
         when (_oneTFDialogState.value.type) {
             is OneTFDialogType.AddCategory -> add(text)
         }
+    }
+
+    internal fun onSearchTextChange(value: String) {
+        _search.value = value
+    }
+
+    internal fun clearSearchText() {
+        _search.value = ""
     }
 }
 

@@ -5,6 +5,7 @@
 
 package com.wo1f.chatapp.ui.item
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -33,6 +34,7 @@ import com.wo1f.chatapp.ui.theme.Orange
 import com.wo1f.chatapp.ui.utils.W400xOverlineText
 import com.wo1f.chatapp.ui.utils.W400xh5Text
 import com.wo1f.chatapp.ui.utils.W400xh6Text
+import com.wo1f.chatapp.ui.utils.W500xh5Text
 
 @Composable
 fun ConverItem(
@@ -44,7 +46,9 @@ fun ConverItem(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 12.dp, vertical = 6.dp),
-        shape = MaterialTheme.shapes.medium
+        shape = MaterialTheme.shapes.medium,
+        border = BorderStroke(1.dp, Color.White),
+        color = Color.Transparent
     ) {
         Column(
             modifier = Modifier
@@ -52,7 +56,7 @@ fun ConverItem(
                 .padding(horizontal = 12.dp, vertical = 6.dp),
             verticalArrangement = Arrangement.spacedBy(6.dp)
         ) {
-            W400xh5Text(
+            W500xh5Text(
                 text = "$humanEmoji : ${item.question}",
                 color = MaterialTheme.colors.secondaryVariant
             )

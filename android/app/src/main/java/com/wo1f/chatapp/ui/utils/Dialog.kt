@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.MaterialTheme
@@ -173,6 +174,7 @@ fun OneTextFieldDialog(
                             value = text,
                             label = stringResource(id = type.hint),
                             showKeyboard = true,
+                            maxLines = 1,
                             onValueChange = onTextChange
                         )
 
@@ -191,7 +193,12 @@ fun OneTextFieldDialog(
                 }
             }
 
-            BoxMaxWidthEnd { CloseIcon(onClick = onCloseClick) }
+            BoxMaxWidthEnd {
+                CloseIcon(
+                    modifier = Modifier.size(26.dp),
+                    onClick = onCloseClick
+                )
+            }
         }
     }
 }

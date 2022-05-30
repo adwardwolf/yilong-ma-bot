@@ -7,6 +7,7 @@ package com.wo1f.plugins
 
 import com.wo1f.domain.models.BaseResponse
 import com.wo1f.routes.registerCategoryRoutes
+import com.wo1f.routes.registerChatRoutes
 import com.wo1f.routes.registerConversationRoutes
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
@@ -32,6 +33,7 @@ fun Application.configureRouting() {
 
     registerConversationRoutes()
     registerCategoryRoutes()
+    registerChatRoutes()
 }
 
 val defaultResponse: BaseResponse<Unit>

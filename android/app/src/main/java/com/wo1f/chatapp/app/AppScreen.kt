@@ -9,7 +9,7 @@ sealed class AppScreen(val route: String) {
 
     object Home : AppScreen("/home")
 
-    object Chat : AppScreen("/chat")
+    object Chat : AppScreen("/chat/{room}")
 
     object Conversation : AppScreen("/category/{name}/conversation")
 

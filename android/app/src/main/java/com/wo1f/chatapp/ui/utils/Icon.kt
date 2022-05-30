@@ -5,9 +5,8 @@
 
 package com.wo1f.chatapp.ui.utils
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -15,16 +14,18 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun CloseIcon(onClick: () -> Unit) {
+fun CloseIcon(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
     Surface(
-        modifier = Modifier
-            .size(26.dp)
-            .clickable { onClick() },
+        modifier = modifier,
         shape = CircleShape,
-        color = MaterialTheme.colors.secondary
+        color = MaterialTheme.colors.secondary,
+        onClick = onClick
     ) {
         Icon(
             imageVector = Icons.Default.Close,

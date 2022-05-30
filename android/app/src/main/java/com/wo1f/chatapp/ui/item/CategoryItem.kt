@@ -26,7 +26,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 import com.wo1f.chatapp.data.model.category.CategoryRes
 import com.wo1f.chatapp.ui.utils.W400xh5Text
-import com.wo1f.chatapp.ui.utils.W600xh3Text
+import com.wo1f.chatapp.ui.utils.W500xh3Text
 
 @Composable
 fun CategoryItem(
@@ -38,7 +38,7 @@ fun CategoryItem(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onClick() },
-        color = MaterialTheme.colors.background
+        color = Color.Transparent
     ) {
         Row(
             modifier = Modifier
@@ -54,16 +54,14 @@ fun CategoryItem(
                     color = MaterialTheme.colors.onPrimary
                 ) {
                     Image(
-                        modifier = Modifier
-                            .size(50.dp)
-                            .padding(6.dp),
+                        modifier = Modifier.size(50.dp),
                         painter = painter,
                         contentDescription = null
                     )
                 }
             }
             Column {
-                W600xh3Text(text = "@${item.name}", maxLines = 1)
+                W500xh3Text(text = "@${item.name}", maxLines = 1)
                 W400xh5Text(
                     text = "${item.count} Conversations",
                     color = Color.LightGray

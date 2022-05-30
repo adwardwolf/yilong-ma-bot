@@ -6,23 +6,21 @@
 package com.wo1f.chatapp.utils
 
 import com.google.gson.Gson
-import com.wo1f.chatapp.data.model.Chat
 import com.wo1f.chatapp.data.model.ChatRes
+import com.wo1f.chatapp.data.model.ChatRq
 import com.wo1f.chatapp.data.model.JoinChat
 import io.socket.client.IO
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
 import io.socket.engineio.client.EngineIOException
 import timber.log.Timber
-import java.time.LocalTime
+import java.time.LocalDate
 
 class SocketIO {
 
     private lateinit var mSocket: Socket
     private lateinit var mListener: OnSocketListener
     private val gson = Gson()
-    private val name = "adwardwo1f"
-    private val room = "1"
 
     init {
         try {
@@ -61,11 +59,12 @@ class SocketIO {
     private val onNewUser: Emitter.Listener
         get() = Emitter.Listener {
             val name = it[0] as String
-            val chat = Chat(
-                name = name,
+            val chat = ChatRes(
+                id = "",
+                userName = name,
                 text = "",
-                date = LocalTime.now(),
-                type = Chat.Type.JOINED
+                roomName = room,
+                date = LocalDate.now().toAppDate()
             )
             mListener.setSocketListener(chat)
         }
@@ -74,11 +73,12 @@ class SocketIO {
         get() = Emitter.Listener {
             val chatRes = gson.fromJson(it[0].toString(), ChatRes::class.java)
             Timber.d("chatRes", it[0].toString())
-            val chat = Chat(
-                name = chatRes.userName,
+            val chat = ChatRes(
+                id = chatRes.id,
+                userName = chatRes.userName,
+                roomName = room,
                 text = chatRes.text,
-                date = LocalTime.now(),
-                type = Chat.Type.RECEIVER
+                date = LocalDate.now().toAppDate()
             )
             mListener.setSocketListener(chat)
         }
@@ -86,11 +86,12 @@ class SocketIO {
     private val onUserLeft: Emitter.Listener
         get() = Emitter.Listener {
             val leftUserName = it[0] as String
-            val chat = Chat(
-                name = leftUserName,
+            val chat = ChatRes(
+                id = "",
+                userName = leftUserName,
+                roomName = room,
                 text = "",
-                date = LocalTime.now(),
-                type = Chat.Type.LEFT
+                date = LocalDate.now().toAppDate()
             )
             mListener.setSocketListener(chat)
         }
@@ -100,7 +101,7 @@ class SocketIO {
         }
 
     fun sendMessage(text: String) {
-        val sendData = ChatRes(
+        val sendData = ChatRq(
             userName = name,
             roomName = room,
             text = text
@@ -122,10 +123,12 @@ class SocketIO {
 
     interface OnSocketListener {
 
-        fun setSocketListener(chat: Chat)
+        fun setSocketListener(chat: ChatRes)
     }
 
     companion object {
+        const val name = "adwardwo1f"
+        const val room = "1"
         const val EVENT_NEW_USER = "new_user"
         const val EVENT_USER_LEFT = "user_left"
         const val EVENT_UPDATE_CHAT = "update_chat"

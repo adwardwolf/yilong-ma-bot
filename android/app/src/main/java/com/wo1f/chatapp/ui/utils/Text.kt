@@ -33,12 +33,14 @@ fun W800xh2Text(
 
 @Composable
 fun W600xh3Text(
+    modifier: Modifier = Modifier,
     text: String,
     textAlign: TextAlign? = null,
     color: Color = Color.Unspecified,
     maxLines: Int = Int.MAX_VALUE
 ) {
     Text(
+        modifier = modifier,
         text = text,
         style = MaterialTheme.typography.h3,
         fontWeight = FontWeight.W600,
@@ -62,6 +64,26 @@ fun W600xh4Text(
         text = text,
         style = MaterialTheme.typography.h4,
         fontWeight = FontWeight.W600,
+        textAlign = textAlign,
+        color = color,
+        overflow = TextOverflow.Ellipsis,
+        maxLines = maxLines
+    )
+}
+
+@Composable
+fun W500xh3Text(
+    modifier: Modifier = Modifier,
+    text: String,
+    textAlign: TextAlign? = null,
+    color: Color = Color.Unspecified,
+    maxLines: Int = Int.MAX_VALUE,
+) {
+    Text(
+        modifier = modifier,
+        text = text,
+        style = MaterialTheme.typography.h3,
+        fontWeight = FontWeight.W500,
         textAlign = textAlign,
         color = color,
         overflow = TextOverflow.Ellipsis,

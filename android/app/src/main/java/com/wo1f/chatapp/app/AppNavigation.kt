@@ -51,8 +51,8 @@ private fun NavHostController.navigateToConversation(name: String) {
     this.navigate(AppScreen.Conversation.route.replace("{name}", name))
 }
 
-private fun NavHostController.navigateToChat() {
-    this.navigate(AppScreen.Chat.route)
+private fun NavHostController.navigateToChat(room: String) {
+    this.navigate(AppScreen.Chat.route.replace("{room}", room))
 }
 
 private fun NavHostController.navigateToCategory() {

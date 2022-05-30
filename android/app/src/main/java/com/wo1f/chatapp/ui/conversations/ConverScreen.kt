@@ -20,7 +20,6 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -53,6 +52,7 @@ import com.wo1f.chatapp.ui.item.ConverItem
 import com.wo1f.chatapp.ui.model.OneTFDialogType
 import com.wo1f.chatapp.ui.model.UiState
 import com.wo1f.chatapp.ui.utils.AddFAB
+import com.wo1f.chatapp.ui.utils.BgImageScaffold
 import com.wo1f.chatapp.ui.utils.BoxMaxSizeCenter
 import com.wo1f.chatapp.ui.utils.BoxMaxWidthEnd
 import com.wo1f.chatapp.ui.utils.CloseIcon
@@ -83,7 +83,7 @@ fun ConverScreen(goBack: () -> Unit) {
     val oneTFDialogState by remember { viewModel.oneTFDialogState }.collectAsState()
     val listState by remember { viewModel.listState }.collectAsState()
 
-    Scaffold(
+    BgImageScaffold(
         topBar = {
             ConverTopBar(
                 name = name,
@@ -325,11 +325,13 @@ private fun AddConversationDialog(
                             value = question,
                             label = stringResource(id = R.string.question),
                             showKeyboard = true,
+                            maxLines = 1,
                             onValueChange = onQuestionChange
                         )
                         CustomOutlineTextField(
                             value = answer,
                             label = stringResource(id = R.string.answer),
+                            maxLines = 5,
                             onValueChange = onAnswerChange
                         )
 
@@ -358,7 +360,12 @@ private fun AddConversationDialog(
                 }
             }
 
-            BoxMaxWidthEnd { CloseIcon(onClick = onCloseClick) }
+            BoxMaxWidthEnd {
+                CloseIcon(
+                    modifier = Modifier.size(26.dp),
+                    onClick = onCloseClick
+                )
+            }
         }
     }
 }

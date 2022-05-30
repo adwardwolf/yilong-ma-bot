@@ -24,3 +24,10 @@ sealed class ConverAction : Action {
 
     object DeleteCategory : ConverAction()
 }
+
+sealed class ChatAction : Action {
+
+    object Update : ChatAction()
+
+    object Delete : ChatAction()
+}

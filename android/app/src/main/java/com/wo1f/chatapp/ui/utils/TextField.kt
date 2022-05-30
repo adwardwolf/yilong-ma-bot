@@ -32,6 +32,7 @@ fun CustomOutlineTextField(
     modifier: Modifier = Modifier,
     value: String,
     label: String,
+    maxLines: Int,
     shouldBeEnabled: Boolean = true,
     showKeyboard: Boolean? = false,
     onValueChange: (String) -> Unit,
@@ -52,8 +53,7 @@ fun CustomOutlineTextField(
             onValueChange(it.text)
         },
         label = { Text(label) },
-        maxLines = 1,
-        singleLine = true,
+        maxLines = maxLines,
         visualTransformation = VisualTransformation.None,
         shape = MaterialTheme.shapes.large,
         colors = TextFieldDefaults.outlinedTextFieldColors(

@@ -4,6 +4,7 @@ buildscript {
         nav_version = '2.4.2'
         hilt_version = '2.42'
         retrofit_version = '2.9.0'
+        mongodb_version = '4.2.3'
     }
 
     dependencies {

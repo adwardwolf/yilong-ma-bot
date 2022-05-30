@@ -7,7 +7,6 @@ package com.wo1f.chatapp.ui.item
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,13 +14,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -29,9 +26,7 @@ import com.wo1f.chatapp.R
 import com.wo1f.chatapp.data.model.Chat
 import com.wo1f.chatapp.ui.utils.W400xOverlineText
 import com.wo1f.chatapp.ui.utils.W400xh5Text
-import com.wo1f.chatapp.ui.utils.W400xh6Text
 import com.wo1f.chatapp.ui.utils.W600xh5Text
-import com.wo1f.chatapp.utils.toAppTime
 
 @Composable
 fun ChatItem(chat: Chat) {
@@ -41,12 +36,6 @@ fun ChatItem(chat: Chat) {
         }
         Chat.Type.RECEIVER -> {
             ChatReceiverItem(chat)
-        }
-        Chat.Type.JOINED -> {
-            ChatJoinedItem(chat)
-        }
-        Chat.Type.LEFT -> {
-            ChatLeftItem(chat)
         }
     }
 }
@@ -70,11 +59,11 @@ private fun ChatSenderItem(chat: Chat) {
                     maxLines = 1
                 )
                 W400xh5Text(
-                    text = chat.text,
+                    text = chat.text!!,
                     color = MaterialTheme.colors.background
                 )
                 W400xOverlineText(
-                    text = chat.date.toAppTime(),
+                    text = chat.date,
                     color = MaterialTheme.colors.primaryVariant,
                     maxLines = 1
                 )
@@ -128,11 +117,11 @@ private fun ChatReceiverItem(chat: Chat) {
                     maxLines = 1
                 )
                 W400xh5Text(
-                    text = chat.text,
+                    text = chat.text!!,
                     color = MaterialTheme.colors.background
                 )
                 W400xOverlineText(
-                    text = chat.date.toAppTime(),
+                    text = chat.date,
                     color = MaterialTheme.colors.primaryVariant,
                     maxLines = 1
                 )
@@ -141,50 +130,27 @@ private fun ChatReceiverItem(chat: Chat) {
     }
 }
 
-@Composable
-private fun ChatJoinedItem(chat: Chat) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp, vertical = 2.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Surface(
-            modifier = Modifier.wrapContentWidth(),
-            color = MaterialTheme.colors.secondary,
-            shape = CircleShape
-        ) {
-            Box(
-                modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp)
-            ) {
-                W400xh6Text(
-                    text = "${chat.name} joined chat",
-                    color = MaterialTheme.colors.primary
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun ChatLeftItem(chat: Chat) {
-    Box(
-        modifier = Modifier.fillMaxWidth(),
-        contentAlignment = Alignment.Center
-    ) {
-        Surface(
-            modifier = Modifier.wrapContentWidth(),
-            color = MaterialTheme.colors.secondary,
-            shape = CircleShape
-        ) {
-            Box(
-                modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp)
-            ) {
-                W400xh6Text(
-                    text = "${chat.name} left chat",
-                    color = MaterialTheme.colors.primary
-                )
-            }
-        }
-    }
-}
+// @Composable
+// private fun ChatJoinedItem(chat: Chat) {
+//    Box(
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .padding(horizontal = 8.dp, vertical = 4.dp),
+//        contentAlignment = Alignment.Center
+//    ) {
+//        Surface(
+//            modifier = Modifier.wrapContentWidth(),
+//            color = MaterialTheme.colors.secondary,
+//            shape = CircleShape
+//        ) {
+//            Box(
+//                modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp)
+//            ) {
+//                W400xh6Text(
+//                    text = "${chat.name} joined chat",
+//                    color = MaterialTheme.colors.primary
+//                )
+//            }
+//        }
+//    }
+// }

@@ -67,29 +67,29 @@ class ConverViewModel @Inject constructor(
         return converRepo.getAll(_name.value)
     }
 
-    override suspend fun onLoadSuccess(data: GetConversationRes) {
+    override suspend fun onLoadSuccess(data: GetConversationRes?) {
         emitState { UiState.success(ConverState(data)) }
-        _category.emit(data.category)
+        _category.emit(data?.category)
     }
 
-    override suspend fun onRefreshSuccess(data: GetConversationRes) {
+    override suspend fun onRefreshSuccess(data: GetConversationRes?) {
         emitState { UiState.success(ConverState(data)) }
-        _category.emit(data.category)
+        _category.emit(data?.category)
     }
 
     internal fun add(question: String, answer: String) {
         val request = ConversationRq(question, answer, _name.value)
         viewModelScope.launch {
-            converRepo.add(request).collect { result ->
+            converRepo.insert(request).collect { result ->
                 result.handleAction(ConverAction.Add)
             }
         }
     }
 
     internal fun update(question: String, answer: String) {
-        val request = ConversationRq(question, answer, _name.value)
-        viewModelScope.launch {
-            _clickedItem.value?.id?.let { id ->
+        _clickedItem.value?.id?.let { id ->
+            viewModelScope.launch {
+                val request = ConversationRq(question, answer, _name.value)
                 converRepo.update(id, request).collect { result ->
                     result.handleAction(ConverAction.Update)
                 }
@@ -126,14 +126,14 @@ class ConverViewModel @Inject constructor(
         }
     }
 
-    internal fun onEditCategoryClick(item: ConversationRes) {
+    internal fun onEditConverClick(item: ConversationRes) {
         setClickedItem(item)
         onQuestionChange(item.question)
         onAnswerChange(item.answer)
         setUpdateConverAD(true)
     }
 
-    internal fun onDeleteCategoryClick(item: ConversationRes) {
+    internal fun onDeleteConverClick(item: ConversationRes) {
         setClickedItem(item)
         showTwoActionDialog(TwoActionDialogType.Delete)
     }
@@ -168,7 +168,7 @@ class ConverViewModel @Inject constructor(
         _clickedItem.value = item
     }
 
-    private fun showTwoActionDialog(type: TwoActionDialogType) {
+    internal fun showTwoActionDialog(type: TwoActionDialogType) {
         _twoActionDialogState.value = DialogState.show(type)
     }
 
@@ -179,6 +179,7 @@ class ConverViewModel @Inject constructor(
     internal fun onTwoDialogActionClick() {
         when (_twoActionDialogState.value.type) {
             is TwoActionDialogType.Delete -> delete()
+            else -> {}
         }
         hideTwoActionDialog()
     }
@@ -195,6 +196,7 @@ class ConverViewModel @Inject constructor(
         when (_oneTFDialogState.value.type) {
             is OneTFDialogType.DeleteCategory -> deleteCategory()
             is OneTFDialogType.UpdateCategory -> updateCategory(text)
+            else -> {}
         }
     }
 }

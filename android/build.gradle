@@ -1,10 +1,13 @@
 buildscript {
     ext {
-        compose_version = '1.0.1'
+        compose_version = '1.1.1'
         nav_version = '2.4.2'
         hilt_version = '2.42'
         retrofit_version = '2.9.0'
         mongodb_version = '4.2.3'
+        mockk_version = '1.12.4'
+        junit_version = '5.8.2'
+        coroutine_version = '1.6.2'
     }
 
     dependencies {
@@ -14,7 +17,7 @@ buildscript {
 plugins {
     id 'com.android.application' version '7.1.2' apply false
     id 'com.android.library' version '7.1.2' apply false
-    id 'org.jetbrains.kotlin.android' version '1.5.21' apply false
+    id 'org.jetbrains.kotlin.android' version '1.6.10' apply false
 }
 
 task clean(type: Delete) {

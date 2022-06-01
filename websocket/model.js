@@ -1,3 +1,8 @@
+/*
+@author adwardwo1f
+@created May 28, 2022
+*/
+
 const mongoose = require("mongoose");
 
 const chatSchema = new mongoose.Schema({

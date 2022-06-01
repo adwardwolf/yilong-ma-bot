@@ -18,7 +18,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import org.bson.types.ObjectId
-import timber.log.Timber
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -38,22 +37,19 @@ class ChatViewModel @Inject constructor(
         return repo.getAll(roomName)
     }
 
-    override suspend fun onLoadSuccess(data: List<ChatRes>) {
-        emitState {
-            Timber.d(data.toString())
-            UiState.success(ChatState(data))
-        }
-    }
-
-    override suspend fun onRefreshSuccess(data: List<ChatRes>) {
+    override suspend fun onLoadSuccess(data: List<ChatRes>?) {
         emitState { UiState.success(ChatState(data)) }
     }
 
-    fun onTextChange(value: String) {
+    override suspend fun onRefreshSuccess(data: List<ChatRes>?) {
+        emitState { UiState.success(ChatState(data)) }
+    }
+
+    internal fun onTextChange(value: String) {
         _text.value = value
     }
 
-    fun sendChat(text: String) {
+    internal fun sendChat(text: String) {
         val id = ObjectId.get()
         val chat = ChatRes(
             id = id.toString(),
@@ -71,7 +67,7 @@ class ChatViewModel @Inject constructor(
         }
     }
 
-    fun receiveChat(chat: ChatRes) {
+    internal fun receiveChat(chat: ChatRes) {
         emitState { old ->
             old.state?.chatList?.let { list ->
                 val newList = ArrayList(list)
@@ -81,11 +77,11 @@ class ChatViewModel @Inject constructor(
         }
     }
 
-    fun clearText() {
+    internal fun clearText() {
         _text.value = ""
     }
 }
 
 data class ChatState(
-    val chatList: List<ChatRes>
+    val chatList: List<ChatRes>? = null
 ) : State

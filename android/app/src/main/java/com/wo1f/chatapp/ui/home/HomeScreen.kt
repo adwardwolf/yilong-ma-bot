@@ -19,7 +19,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.wo1f.chatapp.R
 import com.wo1f.chatapp.ui.item.HomeItem
 import com.wo1f.chatapp.ui.utils.BgImageScaffold
@@ -31,7 +30,7 @@ fun HomeScreen(
     goToChat: (String) -> Unit,
     goToCategory: () -> Unit
 ) {
-    val viewModel: HomeViewModel = hiltViewModel()
+//    val viewModel: HomeViewModel = hiltViewModel()
 
     BgImageScaffold(
         topBar = {

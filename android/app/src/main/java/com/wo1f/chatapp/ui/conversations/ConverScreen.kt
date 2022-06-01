@@ -104,8 +104,8 @@ fun ConverScreen(goBack: () -> Unit) {
             ConverContent(
                 baseState = baseState,
                 listState = listState,
-                onEditClick = viewModel::onEditCategoryClick,
-                onDeleteClick = viewModel::onDeleteCategoryClick
+                onEditClick = viewModel::onEditConverClick,
+                onDeleteClick = viewModel::onDeleteConverClick
             )
         },
         floatingActionButton = {

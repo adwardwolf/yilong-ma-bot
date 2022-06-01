@@ -49,9 +49,9 @@ abstract class BaseViewModel<S : State, A : Action, Data> : ViewModel() {
 
     internal abstract suspend fun repoCall(): Flow<DataResource<Data>>
 
-    internal abstract suspend fun onLoadSuccess(data: Data)
+    internal abstract suspend fun onLoadSuccess(data: Data?)
 
-    internal abstract suspend fun onRefreshSuccess(data: Data)
+    internal abstract suspend fun onRefreshSuccess(data: Data?)
 
     /**
      * Load main data by calling [repoCall] and update [baseState] based on the result
@@ -60,9 +60,7 @@ abstract class BaseViewModel<S : State, A : Action, Data> : ViewModel() {
         viewModelScope.launch {
             repoCall().collect { result ->
                 result.onSuccess { data ->
-                    if (data != null) {
-                        onLoadSuccess(data)
-                    }
+                    onLoadSuccess(data)
                 }.onFailure { msg, dialogMsg ->
                     emitState { UiState.error(msg, dialogMsg) }
                 }.onLoading {
@@ -80,9 +78,7 @@ abstract class BaseViewModel<S : State, A : Action, Data> : ViewModel() {
         viewModelScope.launch {
             repoCall().collect { result ->
                 result.onSuccess { data ->
-                    if (data != null) {
-                        onRefreshSuccess(data)
-                    }
+                    onRefreshSuccess(data)
                 }.onFailure { msg, dialogMsg ->
                     emitState { UiState.error(msg, dialogMsg) }
                 }.onLoading {}

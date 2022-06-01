@@ -42,15 +42,15 @@ class CategoryViewModel @Inject constructor(
         return repo.getAll()
     }
 
-    override suspend fun onLoadSuccess(data: List<CategoryRes>) {
+    override suspend fun onLoadSuccess(data: List<CategoryRes>?) {
         emitState { UiState.success(CategoryState(data)) }
     }
 
-    override suspend fun onRefreshSuccess(data: List<CategoryRes>) {
+    override suspend fun onRefreshSuccess(data: List<CategoryRes>?) {
         emitState { UiState.success(CategoryState(data)) }
     }
 
-    private fun add(category: String) {
+    internal fun add(category: String) {
         viewModelScope.launch {
             repo.insert(CategoryRq(category)).collect { result ->
                 result.handleAction(CategoryAction.Add)
@@ -77,6 +77,7 @@ class CategoryViewModel @Inject constructor(
     internal fun onOneTFDialogButtonClick(text: String) {
         when (_oneTFDialogState.value.type) {
             is OneTFDialogType.AddCategory -> add(text)
+            else -> {}
         }
     }
 

@@ -19,7 +19,7 @@ import javax.inject.Singleton
 @Singleton
 class ConversationRepo @Inject constructor(private val service: ConversationService) {
 
-    suspend fun add(body: ConversationRq): Flow<DataResource<*>> {
+    suspend fun insert(body: ConversationRq): Flow<DataResource<*>> {
         return object : DataResult<Unit>() {
             override suspend fun apiCall(): Response<BaseResponse<Unit>> {
                 return service.addConversation(body)

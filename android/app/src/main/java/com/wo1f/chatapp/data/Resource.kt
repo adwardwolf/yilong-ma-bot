@@ -29,10 +29,10 @@ abstract class DataResult<T> {
                 }
                 emit(result)
             } catch (exception: SocketTimeoutException) {
-                emit(DataResource.Error(ErrorMessage.SOCKET_TIMEOUT))
+                emit(DataResource.Error(ErrorMsg.SOCKET_TIMEOUT))
             } catch (exception: Exception) {
                 exception.printStackTrace()
-                emit(DataResource.Error(ErrorMessage.EXCEPTION))
+                emit(DataResource.Error(ErrorMsg.EXCEPTION))
             }
         }
     }
@@ -52,7 +52,7 @@ sealed class DataResource<out T> {
      * @property dialogMsg A Specific error message that should show in the dialog
      */
     class Error(
-        val msg: ErrorMessage? = null,
+        val msg: ErrorMsg? = null,
         val dialogMsg: Int? = null
     ) : DataResource<Nothing>()
 
@@ -82,7 +82,7 @@ sealed class DataResource<out T> {
 /**
  * Generics error message
  */
-enum class ErrorMessage(val value: Int) {
+enum class ErrorMsg(val value: Int) {
     SOCKET_TIMEOUT(R.string.error_socket_time_out),
     UNKNOWN(R.string.error_unknown),
     UNAUTHENTICATED(R.string.error_unauthenticated),
@@ -107,10 +107,10 @@ private fun <T> Response<BaseResponse<T>>.getResult(): DataResource<T> {
             DataResource.Success(null)
         }
     } else if (this.code() == 401) {
-        DataResource.Error(ErrorMessage.UNAUTHENTICATED)
+        DataResource.Error(ErrorMsg.UNAUTHENTICATED)
     } else if (this.code() == 404) {
-        DataResource.Error(ErrorMessage.NOT_FOUND)
+        DataResource.Error(ErrorMsg.NOT_FOUND)
     } else {
-        DataResource.Error(ErrorMessage.UNKNOWN)
+        DataResource.Error(ErrorMsg.UNKNOWN)
     }
 }

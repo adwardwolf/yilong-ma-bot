@@ -21,7 +21,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.wo1f.chatapp.R
+import com.wo1f.chatapp.ui.theme.ChatAppTheme
 import com.wo1f.chatapp.ui.utils.W600xh3Text
 
 /**
@@ -53,7 +57,9 @@ fun BasicListItem(
                     color = MaterialTheme.colors.onPrimary
                 ) {
                     Image(
-                        modifier = Modifier.size(50.dp).padding(6.dp),
+                        modifier = Modifier
+                            .size(50.dp)
+                            .padding(6.dp),
                         painter = painter,
                         contentDescription = null
                     )
@@ -61,5 +67,17 @@ fun BasicListItem(
             }
             W600xh3Text(text = "@$text", maxLines = 1)
         }
+    }
+}
+
+@Preview
+@Composable
+private fun BasicListItemPreview() {
+    ChatAppTheme(darkTheme = true) {
+        BasicListItem(
+            text = "Bot",
+            painter = painterResource(id = R.drawable.ic_bot_profile),
+            onClick = {}
+        )
     }
 }

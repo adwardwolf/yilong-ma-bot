@@ -10,7 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.wo1f.chatapp.data.DataResource
 import com.wo1f.chatapp.data.model.category.CategoryRes
 import com.wo1f.chatapp.data.model.category.CategoryRq
-import com.wo1f.chatapp.data.repo.CategoryRepo
+import com.wo1f.chatapp.domain.repo.CategoryRepo
 import com.wo1f.chatapp.ui.base.BaseViewModel
 import com.wo1f.chatapp.ui.model.CategoryAction
 import com.wo1f.chatapp.ui.model.OneTFDialogType

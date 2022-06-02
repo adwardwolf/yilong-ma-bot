@@ -27,14 +27,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wo1f.chatapp.R
 import com.wo1f.chatapp.data.model.conversation.ConversationRes
+import com.wo1f.chatapp.ui.theme.ChatAppTheme
 import com.wo1f.chatapp.ui.theme.Orange
 import com.wo1f.chatapp.ui.utils.W400xOverlineText
 import com.wo1f.chatapp.ui.utils.W400xh5Text
 import com.wo1f.chatapp.ui.utils.W400xh6Text
 import com.wo1f.chatapp.ui.utils.W500xh5Text
+import java.time.LocalDate
 
 @Composable
 fun ConverItem(
@@ -133,3 +136,19 @@ fun CategoryChip(
         }
     }
 }
+
+@Preview
+@Composable
+private fun ConverItemPreview() {
+    ChatAppTheme(darkTheme = true) {
+        ConverItem(item = conversationRes, onDeleteClick = {}, onEditClick = {})
+    }
+}
+
+private val conversationRes = ConversationRes(
+    id = "1",
+    question = "How old are you?",
+    answer = "I'm twenty",
+    category = "greetings",
+    createdAt = LocalDate.now().toString()
+)

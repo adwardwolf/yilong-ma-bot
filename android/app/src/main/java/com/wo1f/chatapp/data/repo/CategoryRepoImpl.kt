@@ -11,15 +11,18 @@ import com.wo1f.chatapp.data.api.CategoryService
 import com.wo1f.chatapp.data.model.BaseResponse
 import com.wo1f.chatapp.data.model.category.CategoryRes
 import com.wo1f.chatapp.data.model.category.CategoryRq
+import com.wo1f.chatapp.domain.repo.CategoryRepo
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class CategoryRepo @Inject constructor(private val service: CategoryService) {
+class CategoryRepoImpl @Inject constructor(
+    private val service: CategoryService
+) : CategoryRepo {
 
-    suspend fun getAll(): Flow<DataResource<List<CategoryRes>>> {
+    override suspend fun getAll(): Flow<DataResource<List<CategoryRes>>> {
         return object : DataResult<List<CategoryRes>>() {
             override suspend fun apiCall(): Response<BaseResponse<List<CategoryRes>>> {
                 return service.getAll()
@@ -27,7 +30,7 @@ class CategoryRepo @Inject constructor(private val service: CategoryService) {
         }.getResult()
     }
 
-    suspend fun insert(body: CategoryRq): Flow<DataResource<Unit>> {
+    override suspend fun insert(body: CategoryRq): Flow<DataResource<Unit>> {
         return object : DataResult<Unit>() {
             override suspend fun apiCall(): Response<BaseResponse<Unit>> {
                 return service.insert(body)
@@ -35,7 +38,7 @@ class CategoryRepo @Inject constructor(private val service: CategoryService) {
         }.getResult()
     }
 
-    suspend fun update(name: String, body: CategoryRq): Flow<DataResource<Unit>> {
+    override suspend fun update(name: String, body: CategoryRq): Flow<DataResource<Unit>> {
         return object : DataResult<Unit>() {
             override suspend fun apiCall(): Response<BaseResponse<Unit>> {
                 return service.update(name, body)
@@ -43,7 +46,7 @@ class CategoryRepo @Inject constructor(private val service: CategoryService) {
         }.getResult()
     }
 
-    suspend fun delete(name: String): Flow<DataResource<Unit>> {
+    override suspend fun delete(name: String): Flow<DataResource<Unit>> {
         return object : DataResult<Unit>() {
             override suspend fun apiCall(): Response<BaseResponse<Unit>> {
                 return service.delete(name)

@@ -15,19 +15,25 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.TopAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.wo1f.chatapp.R
+import com.wo1f.chatapp.ui.theme.ChatAppTheme
 
 @Composable
 fun TopAppBarIconStart(
     imageVector: ImageVector,
     onClick: () -> Unit,
     label: String,
-    contentDescription: String? = null,
+    contentDescription: String?,
 ) {
     TopAppBar(
         backgroundColor = Color.Transparent,
@@ -56,6 +62,19 @@ fun TopAppBarIconStart(
                 color = MaterialTheme.colors.onSurface
             )
         }
+    }
+}
+
+@Preview
+@Composable
+private fun TopAppBarIconStartPreview() {
+    ChatAppTheme(darkTheme = true) {
+        TopAppBarIconStart(
+            imageVector = Icons.Default.ArrowBack,
+            onClick = {},
+            label = stringResource(id = R.string.categories),
+            contentDescription = stringResource(id = R.string.go_back)
+        )
     }
 }
 

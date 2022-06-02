@@ -14,8 +14,8 @@ import com.wo1f.chatapp.data.model.category.CategoryRq
 import com.wo1f.chatapp.data.model.conversation.ConversationRes
 import com.wo1f.chatapp.data.model.conversation.ConversationRq
 import com.wo1f.chatapp.data.model.conversation.GetConversationRes
-import com.wo1f.chatapp.data.repo.CategoryRepo
-import com.wo1f.chatapp.data.repo.ConversationRepo
+import com.wo1f.chatapp.domain.repo.CategoryRepo
+import com.wo1f.chatapp.domain.repo.ConversationRepo
 import com.wo1f.chatapp.ui.base.BaseViewModel
 import com.wo1f.chatapp.ui.model.ConverAction
 import com.wo1f.chatapp.ui.model.OneTFDialogType
@@ -37,10 +37,7 @@ class ConverViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel<ConverState, ConverAction, GetConversationRes>() {
 
-    private val _name = MutableStateFlow(
-        savedStateHandle.get<String>("name")
-            ?: throw IllegalStateException("Category can't be empty")
-    )
+    private val _name = MutableStateFlow(savedStateHandle.get<String>("name") ?: "")
     val name = _name.asStateFlow()
     private val _category = MutableStateFlow<CategoryRes?>(null)
     val category = _category.asStateFlow()

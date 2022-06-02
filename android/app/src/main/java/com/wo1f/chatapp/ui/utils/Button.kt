@@ -18,7 +18,9 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.wo1f.chatapp.ui.theme.ChatAppTheme
 
 @Composable
 fun CustomButton(
@@ -57,12 +59,26 @@ fun CustomButton(
     }
 }
 
+@Preview
+@Composable
+private fun CustomButtonPreview() {
+    ChatAppTheme(darkTheme = true) {
+        CustomButton(
+            text = "Send",
+            enabled = true,
+            isLoading = false,
+            onClick = {}
+        )
+    }
+}
+
 /**
  * A [FloatingActionButton] with an add icon
  */
 @Composable
-fun AddFAB(onClick: () -> Unit) {
+fun AddFAB(modifier: Modifier = Modifier, onClick: () -> Unit) {
     FloatingActionButton(
+        modifier = modifier,
         onClick = onClick,
         content = {
             Icon(
@@ -72,4 +88,12 @@ fun AddFAB(onClick: () -> Unit) {
             )
         }
     )
+}
+
+@Preview
+@Composable
+private fun AddFABPreview() {
+    ChatAppTheme(darkTheme = true) {
+        AddFAB(onClick = {})
+    }
 }

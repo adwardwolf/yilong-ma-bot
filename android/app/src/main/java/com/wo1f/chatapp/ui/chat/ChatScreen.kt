@@ -43,11 +43,13 @@ import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun ChatScreen(goBack: () -> Unit) {
+fun ChatScreen(
+    viewModel: ChatViewModel = hiltViewModel(),
+    goBack: () -> Unit
+) {
 
     val listState = rememberLazyListState()
     val socketIO = remember { SocketIO() }
-    val viewModel: ChatViewModel = hiltViewModel()
     val text by remember { viewModel.text }.collectAsState()
     val baseState by remember { viewModel.baseState }.collectAsState()
     val socketListener = object : SocketIO.OnSocketListener {
@@ -114,7 +116,8 @@ private fun ChatTopBar(goBack: () -> Unit) {
     TopAppBarIconStart(
         imageVector = Icons.Default.ArrowBack,
         onClick = goBack,
-        label = stringResource(id = R.string.chat)
+        label = stringResource(id = R.string.chat),
+        contentDescription = stringResource(id = R.string.go_back)
     )
 }
 

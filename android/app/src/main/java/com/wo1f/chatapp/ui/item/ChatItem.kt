@@ -21,12 +21,16 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wo1f.chatapp.R
 import com.wo1f.chatapp.data.model.chat.Chat
+import com.wo1f.chatapp.ui.theme.ChatAppTheme
 import com.wo1f.chatapp.ui.utils.W400xOverlineText
 import com.wo1f.chatapp.ui.utils.W400xh5Text
 import com.wo1f.chatapp.ui.utils.W600xh5Text
+import com.wo1f.chatapp.utils.toAppTime
+import java.time.LocalTime
 
 @Composable
 fun ChatItem(chat: Chat) {
@@ -129,6 +133,34 @@ private fun ChatReceiverItem(chat: Chat) {
         }
     }
 }
+
+@Preview
+@Composable
+private fun ChatItemPreview() {
+
+    ChatAppTheme(darkTheme = true) {
+        Column(modifier = Modifier.fillMaxWidth()) {
+            ChatItem(chat = chatSender)
+            ChatItem(chat = chatReceiver)
+        }
+    }
+}
+
+private val chatSender = Chat(
+    id = "1",
+    name = "Yilong Ma",
+    text = "Hi",
+    Chat.Type.SENDER,
+    date = LocalTime.now().toAppTime()
+)
+
+private val chatReceiver = Chat(
+    id = "2",
+    name = "Human",
+    text = "How are you doing son?",
+    Chat.Type.RECEIVER,
+    date = LocalTime.now().toAppTime()
+)
 
 // @Composable
 // private fun ChatJoinedItem(chat: Chat) {

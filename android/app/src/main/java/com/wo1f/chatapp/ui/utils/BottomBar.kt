@@ -24,23 +24,24 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.wo1f.chatapp.R
+import com.wo1f.chatapp.ui.theme.ChatAppTheme
 
-@ExperimentalComposeUiApi
 @Composable
 fun ChatBottomBar(
     text: String,
@@ -78,7 +79,8 @@ fun ChatBottomBar(
                     modifier = Modifier
                         .weight(6f)
                         .wrapContentHeight()
-                        .focusRequester(focusRequester),
+                        .focusRequester(focusRequester)
+                        .testTag(stringResource(id = R.string.write_message)),
                     value = text,
                     enabled = true,
                     maxLines = 3,
@@ -127,7 +129,7 @@ fun ChatBottomBar(
                     Icon(
                         modifier = Modifier.size(22.dp),
                         painter = painterResource(id = R.drawable.ic_send),
-                        contentDescription = null,
+                        contentDescription = stringResource(id = R.string.send_chat),
                         tint = if (enabled) {
                             MaterialTheme.colors.secondary
                         } else {
@@ -137,5 +139,18 @@ fun ChatBottomBar(
                 }
             }
         }
+    }
+}
+
+@Preview
+@Composable
+private fun ChatBottomBarPreview() {
+    ChatAppTheme(darkTheme = true) {
+        ChatBottomBar(
+            text = "",
+            enabled = true,
+            onTextChange = {},
+            onSendClick = {}
+        )
     }
 }

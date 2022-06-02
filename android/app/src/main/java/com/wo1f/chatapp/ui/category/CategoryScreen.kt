@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -57,10 +58,10 @@ internal const val CATEGORY_ALL = "all"
 
 @Composable
 fun CategoryScreen(
+    viewModel: CategoryViewModel = hiltViewModel(),
     goBack: () -> Unit,
     goToConver: (String) -> Unit
 ) {
-    val viewModel: CategoryViewModel = hiltViewModel()
     val baseState by remember { viewModel.baseState }.collectAsState()
     val actionState by remember { viewModel.actionState }.collectAsState()
     val oneTFDialogState by remember { viewModel.oneTFDialogState }.collectAsState()
@@ -86,6 +87,7 @@ fun CategoryScreen(
         },
         floatingActionButton = {
             AddFAB(
+                modifier = Modifier.testTag(stringResource(id = R.string.add_new_category)),
                 onClick = {
                     viewModel.clearText()
                     viewModel.showOneTFDialog(OneTFDialogType.AddCategory)
@@ -128,7 +130,8 @@ private fun CategoryTopBar(goBack: () -> Unit) {
     TopAppBarIconStart(
         imageVector = Icons.Default.ArrowBack,
         onClick = goBack,
-        label = stringResource(id = R.string.categories)
+        label = stringResource(id = R.string.categories),
+        contentDescription = stringResource(id = R.string.go_back)
     )
 }
 

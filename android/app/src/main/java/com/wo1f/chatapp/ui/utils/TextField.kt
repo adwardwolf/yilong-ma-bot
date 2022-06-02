@@ -24,6 +24,8 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
+import com.wo1f.chatapp.ui.theme.ChatAppTheme
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -74,5 +76,18 @@ fun CustomOutlineTextField(
             // Move cursor to the end of text
             textFieldValue = textFieldValue.copy(selection = TextRange(value.length))
         }
+    }
+}
+
+@Preview
+@Composable
+private fun CustomOutlineTextFieldPreview() {
+    ChatAppTheme(darkTheme = true) {
+        CustomOutlineTextField(
+            value = "",
+            label = "Name",
+            maxLines = 1,
+            onValueChange = {}
+        )
     }
 }

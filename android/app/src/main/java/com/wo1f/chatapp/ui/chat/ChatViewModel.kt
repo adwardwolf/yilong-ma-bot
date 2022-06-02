@@ -8,7 +8,7 @@ package com.wo1f.chatapp.ui.chat
 import androidx.lifecycle.SavedStateHandle
 import com.wo1f.chatapp.data.DataResource
 import com.wo1f.chatapp.data.model.chat.ChatRes
-import com.wo1f.chatapp.data.repo.ChatRepo
+import com.wo1f.chatapp.domain.repo.ChatRepo
 import com.wo1f.chatapp.ui.base.BaseViewModel
 import com.wo1f.chatapp.ui.model.ChatAction
 import com.wo1f.chatapp.ui.state.State
@@ -27,8 +27,7 @@ class ChatViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel<ChatState, ChatAction, List<ChatRes>>() {
 
-    private val roomName = savedStateHandle.get<String>("room")
-        ?: throw IllegalStateException("Room can't be empty")
+    private val roomName = savedStateHandle.get<String>("room") ?: ""
     val name = "adwardwo1f"
     private val _text = MutableStateFlow("")
     val text = _text.asStateFlow()

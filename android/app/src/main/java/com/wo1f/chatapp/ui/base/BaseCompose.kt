@@ -102,6 +102,7 @@ fun HandleOneTFDialog(
             text = text,
             isLoading = isLoading,
             type = dialogState.type,
+            tfTestTag = stringResource(id = dialogState.type.hint),
             onTextChange = onTextChange,
             onCloseClick = onCloseClick,
             onButtonClick = onButtonClick

@@ -23,8 +23,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.wo1f.chatapp.R
 import com.wo1f.chatapp.data.model.category.CategoryRes
+import com.wo1f.chatapp.ui.theme.ChatAppTheme
 import com.wo1f.chatapp.ui.utils.W400xh5Text
 import com.wo1f.chatapp.ui.utils.W500xh3Text
 
@@ -68,5 +72,17 @@ fun CategoryItem(
                 )
             }
         }
+    }
+}
+
+@Preview
+@Composable
+private fun CategoryItemPreview() {
+    ChatAppTheme(darkTheme = true) {
+        CategoryItem(
+            item = CategoryRes(id = "1", "English", "", 123),
+            painter = painterResource(id = R.drawable.ic_conver),
+            onClick = {}
+        )
     }
 }

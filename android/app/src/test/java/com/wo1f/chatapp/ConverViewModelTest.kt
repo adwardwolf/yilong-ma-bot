@@ -1,14 +1,16 @@
+/**
+ * @author Adwardwo1f
+ * @created May 31, 2022
+ */
+
 package com.wo1f.chatapp
 
 import androidx.lifecycle.SavedStateHandle
 import com.wo1f.chatapp.data.DataResource
 import com.wo1f.chatapp.data.ErrorMsg
-import com.wo1f.chatapp.data.model.category.CategoryRes
-import com.wo1f.chatapp.data.model.conversation.ConversationRes
 import com.wo1f.chatapp.data.model.conversation.ConversationRq
-import com.wo1f.chatapp.data.model.conversation.GetConversationRes
-import com.wo1f.chatapp.data.repo.CategoryRepo
-import com.wo1f.chatapp.data.repo.ConversationRepo
+import com.wo1f.chatapp.data.repo.CategoryRepoImpl
+import com.wo1f.chatapp.data.repo.ConversationRepoImpl
 import com.wo1f.chatapp.ui.conversations.ConverState
 import com.wo1f.chatapp.ui.conversations.ConverViewModel
 import com.wo1f.chatapp.ui.model.ConverAction
@@ -17,6 +19,9 @@ import com.wo1f.chatapp.ui.model.TwoActionDialogType
 import com.wo1f.chatapp.ui.state.ActionState
 import com.wo1f.chatapp.ui.state.DialogState
 import com.wo1f.chatapp.ui.state.UiState
+import com.wo1f.chatapp.utils.MockData.mockConversationRes
+import com.wo1f.chatapp.utils.MockData.mockGetCategoryRes
+import com.wo1f.chatapp.utils.MockData.mockName
 import io.mockk.called
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -31,14 +36,14 @@ import org.junit.jupiter.api.Test
 @OptIn(ExperimentalCoroutinesApi::class)
 class ConverViewModelTest : BaseTest() {
 
-    private lateinit var converRepo: ConversationRepo
+    private lateinit var converRepo: ConversationRepoImpl
 
-    private lateinit var categoryRepo: CategoryRepo
+    private lateinit var categoryRepo: CategoryRepoImpl
 
     private lateinit var viewModel: ConverViewModel
 
     private val savedStateHandle = mockk<SavedStateHandle> {
-        every { this@mockk.get<String>("name") } returns name
+        every { this@mockk.get<String>("name") } returns mockName
     }
 
     @BeforeEach
@@ -57,18 +62,18 @@ class ConverViewModelTest : BaseTest() {
     @Test
     fun `Test success state of baseState`() = runTest {
         When("[converRepo.getAll] is called return success") {
-            coEvery { converRepo.getAll(name) } returns flowOf(DataResource.Success(getCategoryRes))
+            coEvery { converRepo.getAll(mockName) } returns flowOf(DataResource.Success(mockGetCategoryRes))
         }
 
         So("Load Conversation") {
             viewModel.load()
 
             Then("[converRepo.getAll] should be called") {
-                coVerify { converRepo.getAll(name) }
+                coVerify { converRepo.getAll(mockName) }
 
                 And("[baseState] should be success") {
                     val actual = viewModel.baseState.value
-                    actual shouldBe UiState.success(ConverState(getCategoryRes))
+                    actual shouldBe UiState.success(ConverState(mockGetCategoryRes))
                 }
             }
         }
@@ -77,14 +82,14 @@ class ConverViewModelTest : BaseTest() {
     @Test
     fun `Test error state of baseState`() = runTest {
         When("[converRepo.getAll] is called return error") {
-            coEvery { converRepo.getAll(name) } returns flowOf(DataResource.Error(ErrorMsg.UNKNOWN))
+            coEvery { converRepo.getAll(mockName) } returns flowOf(DataResource.Error(ErrorMsg.UNKNOWN))
         }
 
         So("Load Conversation") {
             viewModel.load()
 
             Then("[converRepo.getAll] should be called") {
-                coVerify { converRepo.getAll(name) }
+                coVerify { converRepo.getAll(mockName) }
 
                 And("[baseState] should be error") {
                     val actual = viewModel.baseState.value
@@ -96,14 +101,14 @@ class ConverViewModelTest : BaseTest() {
 
     @Test
     fun `Test success state of actionState`() = runTest {
-        val body = ConversationRq(question = "How are you?", "I'm fine", name)
+        val body = ConversationRq(question = "How are you?", "I'm fine", mockName)
 
         When("[converRepo.insert] is called return success") {
             coEvery { converRepo.insert(body) } returns flowOf(DataResource.Success(null))
         }
 
         Note("[converRepo.getAll] will be called after insert is successful") {
-            coEvery { converRepo.getAll(name) } returns flowOf(DataResource.Success(getCategoryRes))
+            coEvery { converRepo.getAll(mockName) } returns flowOf(DataResource.Success(mockGetCategoryRes))
         }
 
         So("Add Conversation") {
@@ -111,7 +116,7 @@ class ConverViewModelTest : BaseTest() {
 
             Then("[converRepo.insert] and [converRepo.getAll] should be called") {
                 coVerify(exactly = 1) { converRepo.insert(body) }
-                coVerify(exactly = 1) { converRepo.getAll(name) }
+                coVerify(exactly = 1) { converRepo.getAll(mockName) }
 
                 Then("[actionState] should be success") {
                     val actual = viewModel.actionState.value
@@ -120,7 +125,7 @@ class ConverViewModelTest : BaseTest() {
 
                 And("[getCategoryRes] should be matched") {
                     val actual = viewModel.baseState.value.state?.getConverRes
-                    actual shouldBe getCategoryRes
+                    actual shouldBe mockGetCategoryRes
                 }
             }
         }
@@ -128,14 +133,14 @@ class ConverViewModelTest : BaseTest() {
 
     @Test
     fun `Test error state of actionState`() = runTest {
-        val body = ConversationRq(question = "How are you?", "I'm fine", name)
+        val body = ConversationRq(question = "How are you?", "I'm fine", mockName)
 
         When("[converRepo.insert] is called return error") {
             coEvery { converRepo.insert(body) } returns flowOf(DataResource.Success(null))
         }
 
         Note("[converRepo.getAll] will be called after insert is successful") {
-            coEvery { converRepo.getAll(name) } returns flowOf(DataResource.Success(null))
+            coEvery { converRepo.getAll(mockName) } returns flowOf(DataResource.Success(null))
         }
 
         So("Add Conversation") {
@@ -143,7 +148,7 @@ class ConverViewModelTest : BaseTest() {
 
             Then("[converRepo.insert] should be called and [converRepo.getAll] should not be called") {
                 coVerify(exactly = 1) { converRepo.insert(body) }
-                coVerify { converRepo.getAll(name) wasNot called }
+                coVerify { converRepo.getAll(mockName) wasNot called }
 
                 And("[actionState] should be error") {
                     val actual = viewModel.actionState.value
@@ -155,7 +160,7 @@ class ConverViewModelTest : BaseTest() {
 
     @Test
     fun `Test update conversation method`() = runTest {
-        val body = ConversationRq(question = "How are you?", "I'm fine", name)
+        val body = ConversationRq(question = "How are you?", "I'm fine", mockName)
         val id = "1"
 
         When("[converRepo.update] is called return success") {
@@ -178,18 +183,18 @@ class ConverViewModelTest : BaseTest() {
         }
 
         Note("[converRepo.getAll] will be called after update is successful") {
-            coEvery { converRepo.getAll(name) } returns flowOf(DataResource.Success(null))
+            coEvery { converRepo.getAll(mockName) } returns flowOf(DataResource.Success(null))
         }
 
         Given("[clickedItem.id] is not null") {
-            viewModel.onEditConverClick(conversationRes)
+            viewModel.onEditConverClick(mockConversationRes)
 
             So("Update Conversation") {
                 viewModel.update(body.question, body.answer)
 
                 Then("[converRepo.update] should be called") {
                     coVerify(exactly = 1) { converRepo.update(id, body) }
-                    coVerify(exactly = 1) { converRepo.getAll(name) }
+                    coVerify(exactly = 1) { converRepo.getAll(mockName) }
 
                     And("[actionState] should be success") {
                         val actual = viewModel.actionState.value
@@ -226,11 +231,11 @@ class ConverViewModelTest : BaseTest() {
         }
 
         Note("[converRepo.getAll] will be called after delete is successful") {
-            coEvery { converRepo.getAll(name) } returns flowOf(DataResource.Success(null))
+            coEvery { converRepo.getAll(mockName) } returns flowOf(DataResource.Success(null))
         }
 
         Given("[clickedItem.id] is not null") {
-            viewModel.onDeleteConverClick(conversationRes)
+            viewModel.onDeleteConverClick(mockConversationRes)
 
             So("Delete Conversation") {
                 // viewModel.delete() is a private method we cannot called it directly
@@ -239,7 +244,7 @@ class ConverViewModelTest : BaseTest() {
 
                 Then("[converRepo.delete] and [converRepo.getAll] should be called") {
                     coVerify(exactly = 1) { converRepo.delete(id) }
-                    coVerify(exactly = 1) { converRepo.getAll(name) }
+                    coVerify(exactly = 1) { converRepo.getAll(mockName) }
 
                     And("[actionState] should be success") {
                         val actual = viewModel.actionState.value
@@ -320,13 +325,13 @@ class ConverViewModelTest : BaseTest() {
     @Test
     fun `Test onEditCategoryClick method`() = runTest {
         When("Edit category clicked") {
-            viewModel.onEditConverClick(conversationRes)
+            viewModel.onEditConverClick(mockConversationRes)
 
             Then("These values should be matched") {
                 viewModel.run {
-                    clickedItem.value shouldBe conversationRes
-                    question.value shouldBe conversationRes.question
-                    answer.value shouldBe conversationRes.answer
+                    clickedItem.value shouldBe mockConversationRes
+                    question.value shouldBe mockConversationRes.question
+                    answer.value shouldBe mockConversationRes.answer
                     showUpdateConverDialog.value shouldBe true
                 }
             }
@@ -336,48 +341,14 @@ class ConverViewModelTest : BaseTest() {
     @Test
     fun `Test onDeleteCategoryClick method`() = runTest {
         When("Deleted category clicked") {
-            viewModel.onDeleteConverClick(conversationRes)
+            viewModel.onDeleteConverClick(mockConversationRes)
 
             Then("These values should be matched") {
                 viewModel.run {
-                    clickedItem.value shouldBe conversationRes
+                    clickedItem.value shouldBe mockConversationRes
                     twoActionDialogState.value shouldBe DialogState.show(TwoActionDialogType.Delete)
                 }
             }
         }
-    }
-
-    companion object {
-        private const val name = "history"
-        private val categoryRes = CategoryRes(
-            id = "1",
-            name = "greetings",
-            createdAt = "March 13, 2022",
-            count = 2
-        )
-        val conversationRes = ConversationRes(
-            id = "1",
-            answer = "How are you",
-            question = "I'm good",
-            category = "greetings",
-            createdAt = "March 13, 2022"
-        )
-        val converList = listOf(
-            ConversationRes(
-                id = "1",
-                answer = "How are you",
-                question = "I'm good",
-                category = "greetings",
-                createdAt = "March 13, 2022"
-            ),
-            ConversationRes(
-                id = "2",
-                answer = "Hello",
-                question = "Hello",
-                category = "greetings",
-                createdAt = "March 22, 2022"
-            )
-        )
-        private val getCategoryRes = GetConversationRes(categoryRes, converList)
     }
 }

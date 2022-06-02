@@ -11,15 +11,18 @@ import com.wo1f.chatapp.data.api.ConversationService
 import com.wo1f.chatapp.data.model.BaseResponse
 import com.wo1f.chatapp.data.model.conversation.ConversationRq
 import com.wo1f.chatapp.data.model.conversation.GetConversationRes
+import com.wo1f.chatapp.domain.repo.ConversationRepo
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class ConversationRepo @Inject constructor(private val service: ConversationService) {
+class ConversationRepoImpl @Inject constructor(
+    private val service: ConversationService
+) : ConversationRepo {
 
-    suspend fun insert(body: ConversationRq): Flow<DataResource<*>> {
+    override suspend fun insert(body: ConversationRq): Flow<DataResource<*>> {
         return object : DataResult<Unit>() {
             override suspend fun apiCall(): Response<BaseResponse<Unit>> {
                 return service.addConversation(body)
@@ -27,10 +30,7 @@ class ConversationRepo @Inject constructor(private val service: ConversationServ
         }.getResult()
     }
 
-    /**
-     * Get conversations by category name
-     */
-    suspend fun getAll(name: String): Flow<DataResource<GetConversationRes>> {
+    override suspend fun getAll(name: String): Flow<DataResource<GetConversationRes>> {
         return object : DataResult<GetConversationRes>() {
             override suspend fun apiCall(): Response<BaseResponse<GetConversationRes>> {
                 return service.getAll(name)
@@ -38,7 +38,7 @@ class ConversationRepo @Inject constructor(private val service: ConversationServ
         }.getResult()
     }
 
-    suspend fun update(id: String, body: ConversationRq): Flow<DataResource<*>> {
+    override suspend fun update(id: String, body: ConversationRq): Flow<DataResource<*>> {
         return object : DataResult<Unit>() {
             override suspend fun apiCall(): Response<BaseResponse<Unit>> {
                 return service.update(id, body)
@@ -46,7 +46,7 @@ class ConversationRepo @Inject constructor(private val service: ConversationServ
         }.getResult()
     }
 
-    suspend fun delete(id: String): Flow<DataResource<*>> {
+    override suspend fun delete(id: String): Flow<DataResource<*>> {
         return object : DataResult<Unit>() {
             override suspend fun apiCall(): Response<BaseResponse<Unit>> {
                 return service.delete(id)

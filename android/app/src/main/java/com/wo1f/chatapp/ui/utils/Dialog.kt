@@ -24,13 +24,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.wo1f.chatapp.R
 import com.wo1f.chatapp.ui.model.OneTFDialogType
+import com.wo1f.chatapp.ui.theme.ChatAppTheme
 
 @Composable
 fun OkDialog(
@@ -71,6 +74,14 @@ fun OkDialog(
                 }
             }
         }
+    }
+}
+
+@Preview
+@Composable
+private fun OkDialogPreview() {
+    ChatAppTheme(darkTheme = true) {
+        OkDialog(text = "Please log in again!", onDismissRequest = {})
     }
 }
 
@@ -136,6 +147,19 @@ fun TwoActionDialog(
     }
 }
 
+@Preview
+@Composable
+private fun TwoActionDialogPreview() {
+    ChatAppTheme(darkTheme = true) {
+        TwoActionDialog(
+            text = stringResource(id = R.string.delete_item_message),
+            actionText = stringResource(id = R.string.delete),
+            onCancelClick = {},
+            onPosClick = {}
+        )
+    }
+}
+
 /**
  * A dialog which has one text field and one button
  */
@@ -145,6 +169,7 @@ fun OneTextFieldDialog(
     text: String,
     isLoading: Boolean,
     type: OneTFDialogType,
+    tfTestTag: String,
     onTextChange: (String) -> Unit,
     onCloseClick: () -> Unit,
     onButtonClick: (String) -> Unit
@@ -156,10 +181,10 @@ fun OneTextFieldDialog(
     }
 
     Dialog(
-        properties = DialogProperties(usePlatformDefaultWidth = false),
+        properties = DialogProperties(usePlatformDefaultWidth = true),
         onDismissRequest = {}
     ) {
-        Box(modifier = Modifier.padding(horizontal = 30.dp)) {
+        Box {
             Box(modifier = Modifier.padding(8.dp)) {
                 Surface(
                     color = MaterialTheme.colors.background,
@@ -178,6 +203,7 @@ fun OneTextFieldDialog(
                         }
 
                         CustomOutlineTextField(
+                            modifier = Modifier.testTag(tfTestTag),
                             value = text,
                             label = stringResource(id = type.hint),
                             showKeyboard = true,
@@ -207,5 +233,21 @@ fun OneTextFieldDialog(
                 )
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun OneTextFieldDialogPreview() {
+    ChatAppTheme(darkTheme = true) {
+        OneTextFieldDialog(
+            text = stringResource(id = R.string.add_new_category),
+            isLoading = false,
+            type = OneTFDialogType.AddCategory,
+            tfTestTag = "",
+            onButtonClick = {},
+            onCloseClick = {},
+            onTextChange = {}
+        )
     }
 }

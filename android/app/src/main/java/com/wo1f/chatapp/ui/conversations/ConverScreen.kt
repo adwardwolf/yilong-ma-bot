@@ -32,6 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -65,9 +66,8 @@ import com.wo1f.chatapp.ui.utils.W600xh3Text
 import kotlinx.coroutines.delay
 
 @Composable
-fun ConverScreen(goBack: () -> Unit) {
+fun ConverScreen(viewModel: ConverViewModel = hiltViewModel(), goBack: () -> Unit) {
 
-    val viewModel = hiltViewModel<ConverViewModel>()
     val name by remember { viewModel.name }.collectAsState()
     val category by remember { viewModel.category }.collectAsState()
     val baseState by remember { viewModel.baseState }.collectAsState()
@@ -110,10 +110,13 @@ fun ConverScreen(goBack: () -> Unit) {
         },
         floatingActionButton = {
             if (name != "all") {
-                AddFAB(onClick = {
-                    viewModel.clearText()
-                    viewModel.setAddConverAD(true)
-                })
+                AddFAB(
+                    modifier = Modifier.testTag(stringResource(id = R.string.add_new_conversation)),
+                    onClick = {
+                        viewModel.clearText()
+                        viewModel.setAddConverAD(true)
+                    }
+                )
             }
         }
     )
@@ -218,7 +221,7 @@ private fun ConverTopBar(
                 Icon(
                     modifier = Modifier.fillMaxSize(),
                     imageVector = Icons.Default.ArrowBack,
-                    contentDescription = null
+                    contentDescription = stringResource(id = R.string.go_back)
                 )
             }
         },
@@ -226,7 +229,9 @@ private fun ConverTopBar(
             if (name != CATEGORY_ALL) {
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     IconButton(
-                        modifier = Modifier.size(36.dp),
+                        modifier = Modifier
+                            .size(36.dp)
+                            .testTag(stringResource(id = R.string.delete_category)),
                         enabled = contentEndEnable,
                         onClick = onDeleteClick,
                         content = {
@@ -238,7 +243,9 @@ private fun ConverTopBar(
                         }
                     )
                     IconButton(
-                        modifier = Modifier.size(36.dp),
+                        modifier = Modifier
+                            .size(36.dp)
+                            .testTag(stringResource(id = R.string.update_category)),
                         enabled = contentEndEnable,
                         onClick = onEditClick,
                         content = {

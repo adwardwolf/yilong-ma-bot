@@ -18,7 +18,6 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.wo1f.yilongma.domain.repo.ChatRepo
 import com.wo1f.yilongma.fake_repo.ChatRepoFake
 import com.wo1f.yilongma.ui.chat.ChatScreen

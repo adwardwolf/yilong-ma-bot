@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.wo1f.chatapp">
+    package="com.wo1f.yilongma">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
-        android:name=".app.Application"
+        android:name="com.wo1f.yilongma.app.Application"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -15,9 +15,8 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.ChatApp">
         <activity
-            android:name=".ui.main.MainActivity"
+            android:name="com.wo1f.yilongma.ui.main.MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.ChatApp"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>

@@ -20,8 +20,13 @@ repositories {
     maven { url "https://maven.pkg.jetbrains.space/public/p/ktor/eap" }
 }
 
+test {
+    useJUnitPlatform()
+}
+
 dependencies {
     implementation "io.ktor:ktor-server-content-negotiation:$ktor_version"
+    implementation "io.ktor:ktor-client-content-negotiation:$ktor_version"
     implementation "io.ktor:ktor-server-core-jvm:$ktor_version"
     implementation "io.ktor:ktor-serialization-kotlinx-json:$ktor_version"
     implementation "io.ktor:ktor-server-call-logging-jvm:$ktor_version"
@@ -31,12 +36,24 @@ dependencies {
     implementation "ch.qos.logback:logback-classic:$logback_version"
     testImplementation "io.ktor:ktor-server-tests-jvm:$ktor_version"
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+    testImplementation "io.ktor:ktor-server-test-host:$ktor_version"
 
+    // Kmongo
     implementation("org.litote.kmongo:kmongo:$kmongo_version")
     implementation("org.litote.kmongo:kmongo-coroutine:$kmongo_version")
 
+    // Mongodb
     implementation("org.mongodb:mongodb-driver-sync:$mongodb_version")
     implementation("org.mongodb:mongodb-driver-legacy:$mongodb_version")
 
+    // Koin
     implementation("io.insert-koin:koin-ktor:$koin_version")
+
+    // Mockk
+    testImplementation "io.mockk:mockk:$mockk_version"
+
+    // JUnit
+    testImplementation "org.junit.jupiter:junit-jupiter:$junit_version"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:$junit_version"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junit_version"
 }

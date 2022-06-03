@@ -21,19 +21,16 @@ fun Application.registerChatRoutes() {
     val getAllChats by inject<GetAllChats>()
 
     routing {
-        chatRoutes(getAllChats)
+        chatGet(getAllChats)
     }
 }
 
-fun Route.chatRoutes(getAllChats: GetAllChats) {
-
+fun Route.chatGet(getAllChats: GetAllChats) {
     get("/chats/{room}") {
         val room = call.parameters["room"]
         if (room != null) {
             val result = getAllChats(room)
             call.respond(HttpStatusCode.OK, BaseResponse(result))
-        } else {
-            call.respond(HttpStatusCode.BadRequest)
         }
     }
 }

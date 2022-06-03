@@ -9,6 +9,7 @@ import com.wo1f.plugins.configureKoin
 import com.wo1f.plugins.configureMonitoring
 import com.wo1f.plugins.configureRouting
 import com.wo1f.plugins.configureSerialization
+import com.wo1f.plugins.configureStatusPage
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 
@@ -18,5 +19,6 @@ fun main() {
         configureRouting()
         configureSerialization()
         configureMonitoring()
+        configureStatusPage()
     }.start(wait = true)
 }

@@ -34,49 +34,44 @@ fun Application.registerConversationRoutes() {
     val getConversationsByCategory by inject<GetConversationsByCategory>()
 
     routing {
-        conversationRoutes(
-            insertConversation,
-            updateConversation,
-            deleteConversation,
-            getAllConversations,
-            getConversationsByCategory
-        )
+        conversationPost(insertConversation)
+        conversationPatch(updateConversation)
+        conversationDelete(deleteConversation)
+        conversationGet(getConversationsByCategory, getAllConversations)
     }
 }
 
-fun Route.conversationRoutes(
-    insertConversation: InsertConversation,
-    updateConversation: UpdateConversation,
-    deleteConversation: DeleteConversation,
-    getAllConversations: GetAllConversations,
-    getConversationsByCategory: GetConversationsByCategory
-) {
-
+fun Route.conversationPost(insertConversation: InsertConversation) {
     post<ConversationRq>("/conversation") { request ->
         insertConversation(request)
         call.respond(HttpStatusCode.Created, defaultResponse)
     }
+}
 
+fun Route.conversationPatch(updateConversation: UpdateConversation) {
     patch<ConversationRq>("/conversation/{id}") { request ->
         val id = call.parameters["id"]
         if (id != null) {
             updateConversation(id, request)
             call.respond(HttpStatusCode.NoContent, defaultResponse)
-        } else {
-            call.respond(HttpStatusCode.BadRequest, defaultResponse)
         }
     }
+}
 
+fun Route.conversationDelete(deleteConversation: DeleteConversation) {
     delete("/conversation/{id}") {
         val id = call.parameters["id"]
         if (id != null) {
             deleteConversation(id)
             call.respond(HttpStatusCode.NoContent, defaultResponse)
-        } else {
-            call.respond(HttpStatusCode.BadRequest, defaultResponse)
         }
     }
+}
 
+fun Route.conversationGet(
+    getConversationsByCategory: GetConversationsByCategory,
+    getAllConversations: GetAllConversations
+) {
     get("/{name}/conversation") {
         val name = call.parameters["name"]
         if (name != null) {
@@ -87,8 +82,6 @@ fun Route.conversationRoutes(
                 val result = getConversationsByCategory(name)
                 call.respond(HttpStatusCode.OK, BaseResponse(result))
             }
-        } else {
-            call.respond(HttpStatusCode.BadRequest, BaseResponse<Unit>())
         }
     }
 }

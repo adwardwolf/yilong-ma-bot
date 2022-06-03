@@ -47,34 +47,42 @@ fun Route.categoriesRoutes(
     updateCategory: UpdateCategory,
     deleteCategory: DeleteCategory
 ) {
+    categoryPost(insertCategory)
+    categoryGet(getCategories)
+    categoryPatch(updateCategory)
+    categoryDelete(deleteCategory)
+}
 
+fun Route.categoryPost(insertCategory: InsertCategory) {
     post<CategoryRq>("/category") { request ->
         insertCategory(request)
         call.respond(HttpStatusCode.Created, defaultResponse)
     }
+}
 
+fun Route.categoryGet(getCategories: GetCategories) {
     get("/category") {
         val result = getCategories()
         call.respond(HttpStatusCode.OK, BaseResponse(result))
     }
+}
 
+fun Route.categoryPatch(updateCategory: UpdateCategory) {
     patch<CategoryRq>("/category/{name}") { request ->
         val name = call.parameters["name"]
         if (name != null) {
             updateCategory(name, request)
             call.respond(HttpStatusCode.NoContent, defaultResponse)
-        } else {
-            call.respond(HttpStatusCode.BadRequest, defaultResponse)
         }
     }
+}
 
+fun Route.categoryDelete(deleteCategory: DeleteCategory) {
     delete("/category/{name}") {
         val name = call.parameters["name"]
         if (name != null) {
             deleteCategory(name)
             call.respond(HttpStatusCode.NoContent, defaultResponse)
-        } else {
-            call.respond(HttpStatusCode.BadRequest, defaultResponse)
         }
     }
 }

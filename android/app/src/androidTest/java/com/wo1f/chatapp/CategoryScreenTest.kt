@@ -5,12 +5,13 @@
 
 package com.wo1f.chatapp
 
+import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsFocused
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.assertIsNotFocused
-import androidx.compose.ui.test.assertTextEquals
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
@@ -83,7 +84,7 @@ class CategoryScreenTest {
             clearTextButton.assertIsDisplayed()
             clearTextButton.performClick()
 
-            searchTF.assertTextEquals("nkkk")
+            searchTF.assert(hasText(""))
         }
     }
 
